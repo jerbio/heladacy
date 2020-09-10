@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.VisualBasic;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +11,8 @@ namespace HeladacWeb.Models
 {
     public class EmailLogEntry
     {
+
+        bool _isRead { get; set; } = false;
         public bool isDeleted
         {
             get
@@ -30,6 +34,9 @@ namespace HeladacWeb.Models
                 return email_DB;
             }
         }
+
+
+        #region dbEntries
         public string _id = Guid.NewGuid().ToString();
         public string id
         {
@@ -42,15 +49,30 @@ namespace HeladacWeb.Models
                 _id = value;
             }
         }
-        public string creationTime { get; set; }
-        public string email_userId { get; set; }
-        [ForeignKey("email_userId")]
+        public long creationTime_DB { get; set; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+
+        [Required]
+        public string userId { get; set; }
+        [ForeignKey("userId")]
+        public HelmUser receiver_DB { get; set; }
+        [Required]
+        public string senderEmail_DB { get; set; }
+        [Required]
+        public string emailId { get; set; }
+        [ForeignKey("emailId")]
         public Email email_DB { get; set; }
-        public bool isDeleted_DB { get; set; }
-        public long timeOfDeletion { get; set; }
-        public bool isArchived_DB { get; set; }
-        public long timeOfArchive { get; set; }
-        public bool isRead { get; set; }
+        public bool isDeleted_DB { get; set; } = false;
+        public long timeOfDeletionMs_DB { get; set; }
+        public bool isArchived_DB { get; set; } = false;
+        public long timeOfLastArchiveMs_DB { get; set; }
+        public bool isRead_DB { 
+            get { 
+                return _isRead; 
+            } 
+            set {
+                _isRead = value;
+            } 
+        }
         [NotMapped]
         public JArray readToggleHistory {get; set;}
         public string readToggleHistory_DB { 
@@ -63,7 +85,7 @@ namespace HeladacWeb.Models
                 this.readToggleHistory = JArray.Parse(value);
             } 
         }
-
+        [NotMapped]
         public JArray archiveToggleHistory { get; set; }
         public string archiveToggleHistory_DB
         {
@@ -76,5 +98,6 @@ namespace HeladacWeb.Models
                 this.archiveToggleHistory = JArray.Parse(value);
             }
         }
+        #endregion
     }
 }

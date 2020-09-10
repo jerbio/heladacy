@@ -26,15 +26,15 @@ namespace HeladacWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<HeladacDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<HeladacUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<HeladacDbContext>();
 
             services.AddIdentityServer()
-                .AddApiAuthorization<HeladacUser, ApplicationDbContext>();
+                .AddApiAuthorization<HeladacUser, HeladacDbContext>();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();

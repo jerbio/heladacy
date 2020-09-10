@@ -27,6 +27,7 @@ namespace HeladacWeb.Models
         public string sender_DB { get; set; }
         public string bcc_DB { get; set; }
         public string cc_DB { get; set; }
+        public string receiver_DB { get; set; }
         public string content_DB { get; set; }
     }
 }

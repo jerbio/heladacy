@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace HeladacWeb.Models
 {
+    [Table("SentMails")]
     public class SentMail:Email
     {
         public string heladacUserId { get; set; }

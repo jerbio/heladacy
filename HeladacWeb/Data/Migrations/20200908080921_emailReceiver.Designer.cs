@@ -4,14 +4,16 @@ using HeladacWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HeladacWeb.Data.Migrations
 {
     [DbContext(typeof(HeladacDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200908080921_emailReceiver")]
+    partial class emailReceiver
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,8 +84,8 @@ namespace HeladacWeb.Data.Migrations
                     b.Property<string>("archiveToggleHistory_DB")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("creationTime_DB")
-                        .HasColumnType("bigint");
+                    b.Property<string>("creationTime_DB")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("emailId")
                         .IsRequired()
@@ -99,10 +101,6 @@ namespace HeladacWeb.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("readToggleHistory_DB")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("senderEmail_DB")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("timeOfDeletionMs_DB")
@@ -130,7 +128,8 @@ namespace HeladacWeb.Data.Migrations
 
                     b.HasIndex("userId", "creationTime_DB", "id")
                         .IsUnique()
-                        .HasName("UserId_CreationTime_Email");
+                        .HasName("UserId_CreationTime_Email")
+                        .HasFilter("[creationTime_DB] IS NOT NULL");
 
                     b.ToTable("EmailLogEntrys");
                 });
@@ -529,7 +528,7 @@ namespace HeladacWeb.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HeladacWeb.Models.HelmUser", "receiver_DB")
+                    b.HasOne("HeladacWeb.Models.HelmUser", "sender_DB")
                         .WithMany()
                         .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade)

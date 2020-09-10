@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HeladacWeb.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(HeladacDbContext))]
     [Migration("00000000000000_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
@@ -21,7 +21,7 @@ namespace HeladacWeb.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("HeladacWeb.Models.ApplicationUser", b =>
+            modelBuilder.Entity("HeladacWeb.Models.HeladacUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -314,7 +314,7 @@ namespace HeladacWeb.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("HeladacWeb.Models.ApplicationUser", null)
+                    b.HasOne("HeladacWeb.Models.HeladacUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -323,7 +323,7 @@ namespace HeladacWeb.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("HeladacWeb.Models.ApplicationUser", null)
+                    b.HasOne("HeladacWeb.Models.HeladacUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -338,7 +338,7 @@ namespace HeladacWeb.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HeladacWeb.Models.ApplicationUser", null)
+                    b.HasOne("HeladacWeb.Models.HeladacUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -347,7 +347,7 @@ namespace HeladacWeb.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("HeladacWeb.Models.ApplicationUser", null)
+                    b.HasOne("HeladacWeb.Models.HeladacUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

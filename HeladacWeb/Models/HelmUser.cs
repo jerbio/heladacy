@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace HeladacWeb.Models
 {
     [Table("HelmUsers")]
-    public class HelmUser: IdentityUser
+    public class HelmUser : IdentityUser
     {
         public string address1 { get; }
         public string address2 { get; }
@@ -17,6 +17,9 @@ namespace HeladacWeb.Models
         public string state { get; }
         public string country { get; }
         public string postal { get; }
+        public bool isDeleted { get; set; }
+        public long creationTimeMs_DB { get; set; }
+        public bool isActive { get; set; }
         public HeladacUser heladacUser { get; }
         [Required]
         public string heladacUserId { get; set; }
@@ -29,5 +32,13 @@ namespace HeladacWeb.Models
         public string state_DB { get; set; }
         public string country_DB { get; set; }
         public string postal_DB { get; set; }
+
+        public static HelmUser generateHelmUser(HeladacUser heladcUser)
+        {
+            HelmUser retValue = new HelmUser();
+            retValue.heladacUser_db = heladcUser;
+            return retValue;
+
+        }
     }
 }

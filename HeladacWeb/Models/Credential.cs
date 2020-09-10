@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HeladacWeb.Models
 {
-    public class Credentials
+    public class Credential
     {
         public string _id = Guid.NewGuid().ToString();
         public string id
