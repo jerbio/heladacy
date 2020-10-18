@@ -234,5 +234,7 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 
+# appSettingJson
+**/*appsettings.*
 
 debug/
