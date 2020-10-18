@@ -38,6 +38,12 @@ namespace HeladacWeb
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
+            //#region Allow-Orgin
+            //services.AddCors(c =>
+            //{
+            //    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            //});
+            //#endregion
 
             services.AddControllersWithViews();
             services.AddRazorPages();

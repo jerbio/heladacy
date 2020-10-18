@@ -11,6 +11,6 @@ namespace HeladacWeb.Models
     {
         public string heladacUserId { get; set; }
         [ForeignKey("heladacUserId")]
-        public HelmUser sender_DB { get; set; }
+        public virtual HelmUser senderUser_DB { get; set; }
     }
 }

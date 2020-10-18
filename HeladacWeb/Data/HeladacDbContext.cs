@@ -72,6 +72,11 @@ namespace HeladacWeb.Data
                 .IsUnique()
                 .IsClustered(true);
 
+            modelBuilder.Entity<Email>()
+                .HasIndex(emailEntry => new { emailEntry.emailId_DB})
+                .HasName("Email_EmailId")
+                .IsUnique();
+
         }
     }
 }

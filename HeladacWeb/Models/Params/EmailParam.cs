@@ -1,6 +1,9 @@
-﻿using System;
+﻿using MimeKit;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace HeladacWeb.Models.Params
@@ -14,19 +17,26 @@ namespace HeladacWeb.Models.Params
         public string content { get; set; }
         public string subject { get; set; }
         public string body { get; set; }
+        public string bodyString { get; set; }
         public string addresses { get; set; }
         public string sendType { get; set; }
         public byte [] attachment { get; set; }
         public Email toEmail()
         {
+            byte[] byteArray = Encoding.ASCII.GetBytes(this.content);
+            MemoryStream stream = new MemoryStream(byteArray);
+            var message = MimeMessage.Load(stream);
+            
             Email retValue = new Email()
             {
-                sender_DB = this.senderEmail,
-                subJect_DB = this.subject,
-                bcc_DB = this.bccEnail,
-                cc_DB = this.ccEnail,
-                content_DB = this.content,
-                receiver_DB = this.receiverEmail
+                emailId_DB = message.MessageId,
+                subJect_DB = message.Subject,
+                receiverMailboxAddresses = message.To.Select(mailBoxAddress => (MailboxAddress)mailBoxAddress).ToList(),
+                bccMailboxAddresses= message.Bcc.Select(mailBoxAddress => (MailboxAddress)mailBoxAddress).ToList(),
+                ccMailboxAddresses = message.Cc.Select(mailBoxAddress => (MailboxAddress)mailBoxAddress).ToList(),
+                sender_DB = ((MailboxAddress)message.From.FirstOrDefault()).Address,
+                content_DB = message.TextBody,
+                content_html_DB = message.HtmlBody
             };
 
             return retValue;

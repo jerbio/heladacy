@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MailKit;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -110,6 +112,32 @@ namespace HeladacWeb
             {
                 return _helmDomains.ToArray();
             } 
+        }
+
+        /// <summary>
+        /// Function takes an email and returns a 4 item Tuple.
+        /// Item1 is a boolean is true if <paramref name="input"/> is a valid email format and 
+        /// Item2 is a boolean  is true if <paramref name="input"/> is part of heladac list of domains
+        /// Item3 is a string of the username part of the <paramref name="input"/>
+        /// Item4 is a string of the domain part of the <paramref name="input"/>
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static Tuple<bool, bool, string, string> isHeladacEmail(this string input)
+        {
+            bool isValidEmail = isEmail(input);
+            bool isHeladacEmail = false;
+            string usernameString = null;
+            string domainString = null;
+            if (isValidEmail)
+            {
+                var mailSplit = input.Split('@');
+                usernameString = mailSplit[0].ToLower();
+                domainString = mailSplit[1].ToLower();
+            }
+
+            Tuple<bool, bool, string, string> retValue = new Tuple<bool, bool, string, string>(isValidEmail, isHeladacEmail, usernameString, domainString);
+            return retValue;
         }
     }
 }
