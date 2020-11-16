@@ -4,20 +4,18 @@ using HeladacWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace HeladacWeb.Data.Migrations
+namespace HeladacWeb.Migrations
 {
     [DbContext(typeof(HeladacDbContext))]
-    [Migration("20200908080921_emailReceiver")]
-    partial class emailReceiver
+    partial class HeladacDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.5")
+                .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -26,13 +24,23 @@ namespace HeladacWeb.Data.Migrations
                     b.Property<string>("id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("credentialId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("credentialService_DB")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("heladacUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("helmUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("id");
+
+                    b.HasIndex("credentialId");
+
+                    b.HasIndex("heladacUserId");
 
                     b.HasIndex("helmUserId");
 
@@ -49,18 +57,31 @@ namespace HeladacWeb.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("bcc_DB")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("cc_DB")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("content_DB")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("emailId_DB")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("mailContentId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("receiver_DB")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("sender_DB")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("sender_Email_DB")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("sender_Name_DB")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("subJect_DB")
@@ -70,6 +91,13 @@ namespace HeladacWeb.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("id");
+
+                    b.HasIndex("emailId_DB")
+                        .IsUnique()
+                        .HasName("Email_EmailId")
+                        .HasFilter("[emailId_DB] IS NOT NULL");
+
+                    b.HasIndex("mailContentId");
 
                     b.ToTable("Emails");
 
@@ -84,10 +112,14 @@ namespace HeladacWeb.Data.Migrations
                     b.Property<string>("archiveToggleHistory_DB")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("creationTime_DB")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<long>("creationTime_DB")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("emailId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("heladacUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -101,6 +133,10 @@ namespace HeladacWeb.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("readToggleHistory_DB")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("senderEmail_DB")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("timeOfDeletionMs_DB")
@@ -118,6 +154,8 @@ namespace HeladacWeb.Data.Migrations
 
                     b.HasIndex("emailId");
 
+                    b.HasIndex("heladacUserId");
+
                     b.HasIndex("userId", "emailId")
                         .IsUnique();
 
@@ -128,8 +166,11 @@ namespace HeladacWeb.Data.Migrations
 
                     b.HasIndex("userId", "creationTime_DB", "id")
                         .IsUnique()
-                        .HasName("UserId_CreationTime_Email")
-                        .HasFilter("[creationTime_DB] IS NOT NULL");
+                        .HasName("UserId_CreationTime_Email");
+
+                    b.HasIndex("userId", "isRead_DB", "creationTime_DB", "id")
+                        .IsUnique()
+                        .HasName("UserId_IsRead_CreationTime_Email");
 
                     b.ToTable("EmailLogEntrys");
                 });
@@ -201,50 +242,8 @@ namespace HeladacWeb.Data.Migrations
 
             modelBuilder.Entity("HeladacWeb.Models.HelmUser", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("id")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("address1_DB")
                         .HasColumnType("nvarchar(max)");
@@ -261,6 +260,12 @@ namespace HeladacWeb.Data.Migrations
                     b.Property<long>("creationTimeMs_DB")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("firstName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("heladacUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -271,21 +276,55 @@ namespace HeladacWeb.Data.Migrations
                     b.Property<bool>("isDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("lastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("middleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("passwordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("phoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("postal_DB")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("state_DB")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id")
+                    b.Property<string>("username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id")
                         .HasAnnotation("SqlServer:Clustered", false);
 
-                    b.HasIndex("heladacUserId", "Id")
+                    b.HasIndex("heladacUserId", "id")
                         .IsUnique()
                         .HasName("HelmUser_HeladacUser")
                         .HasAnnotation("SqlServer:Clustered", true);
 
                     b.ToTable("HelmUsers");
+                });
+
+            modelBuilder.Entity("HeladacWeb.Models.MailContent", b =>
+                {
+                    b.Property<string>("id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("content_DB")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("content_html_DB")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("raw")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("MailContent");
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.DeviceFlowCodes", b =>
@@ -506,7 +545,9 @@ namespace HeladacWeb.Data.Migrations
                     b.HasBaseType("HeladacWeb.Models.Email");
 
                     b.Property<string>("heladacUserId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasIndex("heladacUserId");
 
                     b.ToTable("SentMails");
 
@@ -515,9 +556,24 @@ namespace HeladacWeb.Data.Migrations
 
             modelBuilder.Entity("HeladacWeb.Models.Credential", b =>
                 {
+                    b.HasOne("HeladacWeb.Models.HelmUser", "credentialUser_DB")
+                        .WithMany()
+                        .HasForeignKey("credentialId");
+
+                    b.HasOne("HeladacWeb.Models.HelmUser", "heladacUser_DB")
+                        .WithMany()
+                        .HasForeignKey("heladacUserId");
+
                     b.HasOne("HeladacWeb.Models.HelmUser", "helmUser_DB")
                         .WithMany()
                         .HasForeignKey("helmUserId");
+                });
+
+            modelBuilder.Entity("HeladacWeb.Models.Email", b =>
+                {
+                    b.HasOne("HeladacWeb.Models.MailContent", "mailContent_DB")
+                        .WithMany()
+                        .HasForeignKey("mailContentId");
                 });
 
             modelBuilder.Entity("HeladacWeb.Models.EmailLogEntry", b =>
@@ -528,7 +584,13 @@ namespace HeladacWeb.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HeladacWeb.Models.HelmUser", "sender_DB")
+                    b.HasOne("HeladacWeb.Models.HeladacUser", "heladacUser_DB")
+                        .WithMany()
+                        .HasForeignKey("heladacUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HeladacWeb.Models.HelmUser", "receiver_DB")
                         .WithMany()
                         .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -593,6 +655,13 @@ namespace HeladacWeb.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("HeladacWeb.Models.SentMail", b =>
+                {
+                    b.HasOne("HeladacWeb.Models.HelmUser", "senderUser_DB")
+                        .WithMany()
+                        .HasForeignKey("heladacUserId");
                 });
 #pragma warning restore 612, 618
         }

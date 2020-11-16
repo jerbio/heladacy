@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text;
 //using MimeKit.;
 using System.Threading.Tasks;
 
@@ -13,23 +14,23 @@ namespace HeladacWeb.Models
 {
     public class Email
     {
-        public string _id = Guid.NewGuid().ToString();
+        protected string _id = Guid.NewGuid().ToString();
         public string id {
             get {
                 return _id;
             }
             set {
                 _id = value;
-            } 
+            }
         }
 
         public string emailId_DB { get; set; }
         public string subJect_DB { get; set; }
-        public DateTimeOffset timeOfCreation { 
-            get 
-            { 
+        public DateTimeOffset timeOfCreation {
+            get
+            {
                 return DateTimeOffset.FromUnixTimeMilliseconds(this.timeOfCreationMs);
-            } 
+            }
         }
         public long timeOfCreationMs { get; set; } = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         [Required]
@@ -118,7 +119,7 @@ namespace HeladacWeb.Models
         [NotMapped]
         protected virtual List<MailboxAddress> _receiver { get; set; } = null;
         [NotMapped]
-        public List<MailboxAddress> receiverMailboxAddresses { 
+        public List<MailboxAddress> receiverMailboxAddresses {
             get
             {
                 return (_receiver ?? (_receiver = new List<MailboxAddress>()));
@@ -128,9 +129,18 @@ namespace HeladacWeb.Models
                 _receiver = value;
             }
         }
+        [NotMapped]
+        public virtual string receiver
+        {
+            get
+            {
+                return receiver_DB;
+            }
+        }
+
         [Required]
-        public virtual string receiver_DB { 
-            get 
+        public virtual string receiver_DB {
+            get
             {
                 JArray retValue = new JArray();
                 foreach (var MailboxAddress in receiverMailboxAddresses)
@@ -146,12 +156,29 @@ namespace HeladacWeb.Models
                 List<MailboxAddress> receivers = this.receiverMailboxAddresses;
                 foreach (JObject MailboxAddressJson in MailboxAddressesJarray)
                 {
-                    var MailboxAddress = JsonConvert.DeserializeObject<MailboxAddress>(MailboxAddressJson.ToString());
-                    receivers.Add(MailboxAddress);
+                    string address = (string)(MailboxAddressJson.GetValue("Address"));
+                    string name = (string)(MailboxAddressJson.GetValue("Name"));
+                    int encodingCodePage = (int)MailboxAddressJson.SelectToken("Encoding.CodePage");
+                    JArray routeObj = (JArray)(MailboxAddressJson.SelectToken("Route"));
+                    List<string> route = new List<string>();
+                    foreach( JObject eachRoute in routeObj)
+                    {
+                        route.Add((string)eachRoute);
+                    }
+
+                    //string[] route = (string[])routeObj;
+                    Encoding encoding = Encoding.GetEncoding(encodingCodePage);
+                    MailboxAddress mailboxAddress = new MailboxAddress(encoding, name, route, address);
+                    //var MailboxAddress = JsonConvert.DeserializeObject<MailboxAddress>(MailboxAddressJson.ToString());
+                    receivers.Add(mailboxAddress);
                 }
-            } 
+            }
         }
-        public virtual string content_DB { get; set; }
-        public virtual string content_html_DB { get; set; }
+        public virtual string mailContentId {get;set;}
+        [ForeignKey("mailContentId")]
+        public MailContent mailContent_DB
+        {
+            get;set;
+        }
     }
 }

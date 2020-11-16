@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using HeladacWeb.Services;
 
 namespace HeladacWeb.Models
 {
@@ -20,9 +21,18 @@ namespace HeladacWeb.Models
                 _id = value;
             }
         }
+
+        public string credentialId { get; set; }
+        [ForeignKey("credentialId")]
+        public HelmUser credentialUser_DB { get; set; }
+
         public string helmUserId { get; set; }
         [ForeignKey("helmUserId")]
         public HelmUser helmUser_DB { get; set; }
+
+        public string heladacUserId { get; set; }
+        [ForeignKey("heladacUserId")]
+        public HelmUser heladacUser_DB { get; set; }
 
         [NotMapped]
         public CredentialService credentialService { get; set; } = CredentialService.none;

@@ -10,6 +10,9 @@ namespace HeladacWeb
 {
     public static class Utility
     {
+        public const int defaultPageSize = 20;
+        public const int defaultPageIndex = 0;
+
         /// <summary>
         /// Function takes a string and checks if the string is a valid email
         /// </summary>
@@ -88,13 +91,14 @@ namespace HeladacWeb
             retValue = retValue.ToLower();
             return retValue;
         }
-        public static string generateHelmEmail()
+        public static Tuple<string, string> generateHelmEmail()
         {
             string userName = RandomString();
             var domains = helmDomains;
             int domainIndex = random.Next(helmDomains.Length);
             string domainString = domains[domainIndex];
-            string retValue = userName + "@" + domainString;
+            string email = userName + "@" + domainString;
+            Tuple<string, string> retValue = new Tuple<string, string>(email, userName);
             return retValue;
         }
 
@@ -105,7 +109,7 @@ namespace HeladacWeb
         }
         private static readonly string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         private static readonly string passwordChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_)(*&^%$#@!{}:\" <>?,./;\'[]";
-        private static string [] _helmDomains = new string[] { "heldackid.com", "heldac.com" };
+        private static HashSet<string> _helmDomains = new HashSet<string>( new string[] { "heladackid.com", "heladac.com" });
 
         public static string [] helmDomains { 
             get 
@@ -134,6 +138,7 @@ namespace HeladacWeb
                 var mailSplit = input.Split('@');
                 usernameString = mailSplit[0].ToLower();
                 domainString = mailSplit[1].ToLower();
+                isHeladacEmail = _helmDomains.Contains(domainString);
             }
 
             Tuple<bool, bool, string, string> retValue = new Tuple<bool, bool, string, string>(isValidEmail, isHeladacEmail, usernameString, domainString);

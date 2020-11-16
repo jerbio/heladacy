@@ -1,0 +1,3 @@
+﻿https://medium.com/swlh/how-to-distribute-data-protection-keys-with-an-asp-net-core-web-app-8b2b5d52851b
+https://stackoverflow.com/questions/38795103/encrypt-string-in-net-core
+https://edi.wang/post/2019/1/15/caveats-in-aspnet-core-data-protection

@@ -9,8 +9,18 @@ using System.Threading.Tasks;
 namespace HeladacWeb.Models
 {
     [Table("HelmUsers")]
-    public class HelmUser : IdentityUser
+    public class HelmUser: CredentialUser
     {
+        private static readonly HeladacWeb.Services.EncryptionService encryptionService = new Services.EncryptionService();
+
+        public string fullName { 
+            get {
+                string retValue = (this.firstName ?? "") + " " + this.lastName ?? "";
+                retValue = retValue.Trim();
+                return retValue;
+            } 
+        }
+
         public string address1 { get; }
         public string address2 { get; }
         public string city { get; }
@@ -20,6 +30,25 @@ namespace HeladacWeb.Models
         public bool isDeleted { get; set; }
         public long creationTimeMs_DB { get; set; }
         public bool isActive { get; set; }
+        public string decryptedPasssword { 
+            get
+            {
+                return encryptionService.Decrypt(this.passwordHash);
+            } 
+        }
+        protected string _id = Guid.NewGuid().ToString();
+        [Key]
+        public string id
+        {
+            get
+            {
+                return _id;
+            }
+            set
+            {
+                _id = value;
+            }
+        }
         public HeladacUser heladacUser { get; }
         [Required]
         public string heladacUserId { get; set; }

@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace HeladacWeb.Data.Migrations
+namespace HeladacWeb.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -126,8 +126,8 @@ namespace HeladacWeb.Data.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(nullable: false),
+                    ProviderKey = table.Column<string>(nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: false)
                 },
@@ -171,8 +171,8 @@ namespace HeladacWeb.Data.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
-                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
-                    Name = table.Column<string>(maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -183,6 +183,121 @@ namespace HeladacWeb.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HelmUsers",
+                columns: table => new
+                {
+                    id = table.Column<string>(nullable: false),
+                    isDeleted = table.Column<bool>(nullable: false),
+                    creationTimeMs_DB = table.Column<long>(nullable: false),
+                    isActive = table.Column<bool>(nullable: false),
+                    username = table.Column<string>(nullable: true),
+                    password = table.Column<string>(nullable: true),
+                    email = table.Column<string>(nullable: true),
+                    heladacUserId = table.Column<string>(nullable: false),
+                    address1_DB = table.Column<string>(nullable: true),
+                    address2_DB = table.Column<string>(nullable: true),
+                    city_DB = table.Column<string>(nullable: true),
+                    state_DB = table.Column<string>(nullable: true),
+                    country_DB = table.Column<string>(nullable: true),
+                    postal_DB = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HelmUsers", x => x.id)
+                        .Annotation("SqlServer:Clustered", false);
+                    table.ForeignKey(
+                        name: "FK_HelmUsers_AspNetUsers_heladacUserId",
+                        column: x => x.heladacUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Credentials",
+                columns: table => new
+                {
+                    id = table.Column<string>(nullable: false),
+                    helmUserId = table.Column<string>(nullable: true),
+                    credentialService_DB = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Credentials", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Credentials_HelmUsers_helmUserId",
+                        column: x => x.helmUserId,
+                        principalTable: "HelmUsers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Emails",
+                columns: table => new
+                {
+                    id = table.Column<string>(nullable: false),
+                    emailId_DB = table.Column<string>(nullable: true),
+                    subJect_DB = table.Column<string>(nullable: true),
+                    timeOfCreationMs = table.Column<long>(nullable: false),
+                    sender_DB = table.Column<string>(nullable: false),
+                    sender_Name_DB = table.Column<string>(nullable: true),
+                    sender_Email_DB = table.Column<string>(nullable: true),
+                    bcc_DB = table.Column<string>(nullable: false),
+                    cc_DB = table.Column<string>(nullable: false),
+                    receiver_DB = table.Column<string>(nullable: false),
+                    content_DB = table.Column<string>(nullable: true),
+                    content_html_DB = table.Column<string>(nullable: true),
+                    Discriminator = table.Column<string>(nullable: false),
+                    heladacUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Emails", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Emails_HelmUsers_heladacUserId",
+                        column: x => x.heladacUserId,
+                        principalTable: "HelmUsers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmailLogEntrys",
+                columns: table => new
+                {
+                    id = table.Column<string>(nullable: false),
+                    creationTime_DB = table.Column<long>(nullable: false),
+                    userId = table.Column<string>(nullable: false),
+                    senderEmail_DB = table.Column<string>(nullable: false),
+                    emailId = table.Column<string>(nullable: false),
+                    isDeleted_DB = table.Column<bool>(nullable: false),
+                    timeOfDeletionMs_DB = table.Column<long>(nullable: false),
+                    isArchived_DB = table.Column<bool>(nullable: false),
+                    timeOfLastArchiveMs_DB = table.Column<long>(nullable: false),
+                    isRead_DB = table.Column<bool>(nullable: false),
+                    readToggleHistory_DB = table.Column<string>(nullable: true),
+                    archiveToggleHistory_DB = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmailLogEntrys", x => x.id)
+                        .Annotation("SqlServer:Clustered", false);
+                    table.ForeignKey(
+                        name: "FK_EmailLogEntrys_Emails_emailId",
+                        column: x => x.emailId,
+                        principalTable: "Emails",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EmailLogEntrys_HelmUsers_userId",
+                        column: x => x.userId,
+                        principalTable: "HelmUsers",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -226,6 +341,11 @@ namespace HeladacWeb.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Credentials_helmUserId",
+                table: "Credentials",
+                column: "helmUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DeviceCodes_DeviceCode",
                 table: "DeviceCodes",
                 column: "DeviceCode",
@@ -235,6 +355,55 @@ namespace HeladacWeb.Data.Migrations
                 name: "IX_DeviceCodes_Expiration",
                 table: "DeviceCodes",
                 column: "Expiration");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmailLogEntrys_emailId",
+                table: "EmailLogEntrys",
+                column: "emailId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmailLogEntrys_userId_emailId",
+                table: "EmailLogEntrys",
+                columns: new[] { "userId", "emailId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "UserId_Email",
+                table: "EmailLogEntrys",
+                columns: new[] { "userId", "id" },
+                unique: true)
+                .Annotation("SqlServer:Clustered", true);
+
+            migrationBuilder.CreateIndex(
+                name: "UserId_CreationTime_Email",
+                table: "EmailLogEntrys",
+                columns: new[] { "userId", "creationTime_DB", "id" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "UserId_IsRead_CreationTime_Email",
+                table: "EmailLogEntrys",
+                columns: new[] { "userId", "isRead_DB", "creationTime_DB", "id" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "Email_EmailId",
+                table: "Emails",
+                column: "emailId_DB",
+                unique: true,
+                filter: "[emailId_DB] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Emails_heladacUserId",
+                table: "Emails",
+                column: "heladacUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "HelmUser_HeladacUser",
+                table: "HelmUsers",
+                columns: new[] { "heladacUserId", "id" },
+                unique: true)
+                .Annotation("SqlServer:Clustered", true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_Expiration",
@@ -265,13 +434,25 @@ namespace HeladacWeb.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Credentials");
+
+            migrationBuilder.DropTable(
                 name: "DeviceCodes");
+
+            migrationBuilder.DropTable(
+                name: "EmailLogEntrys");
 
             migrationBuilder.DropTable(
                 name: "PersistedGrants");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Emails");
+
+            migrationBuilder.DropTable(
+                name: "HelmUsers");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

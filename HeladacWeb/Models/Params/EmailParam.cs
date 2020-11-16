@@ -20,6 +20,10 @@ namespace HeladacWeb.Models.Params
         public string bodyString { get; set; }
         public string addresses { get; set; }
         public string sendType { get; set; }
+        public string id { get; set; }
+        public bool includeMailContent { get; set; } = false;
+        public int pageIndex { get; set; } = Utility.defaultPageIndex;
+        public int pageSize { get; set; } = Utility.defaultPageSize;
         public byte [] attachment { get; set; }
         public Email toEmail()
         {
@@ -34,9 +38,14 @@ namespace HeladacWeb.Models.Params
                 receiverMailboxAddresses = message.To.Select(mailBoxAddress => (MailboxAddress)mailBoxAddress).ToList(),
                 bccMailboxAddresses= message.Bcc.Select(mailBoxAddress => (MailboxAddress)mailBoxAddress).ToList(),
                 ccMailboxAddresses = message.Cc.Select(mailBoxAddress => (MailboxAddress)mailBoxAddress).ToList(),
+                mailContent_DB = new MailContent()
+                {
+                    content_DB = message.TextBody,
+                    content_html_DB = message.HtmlBody,
+                    raw = this.content
+                },
                 sender_DB = ((MailboxAddress)message.From.FirstOrDefault()).Address,
-                content_DB = message.TextBody,
-                content_html_DB = message.HtmlBody
+                
             };
 
             return retValue;

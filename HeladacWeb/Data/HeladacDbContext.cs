@@ -18,15 +18,9 @@ namespace HeladacWeb.Data
         public virtual DbSet<EmailLogEntry> EmailLogEntrys { get; set; }
         public virtual DbSet<Credential> Credentials { get; set; }
         public virtual DbSet<HeladacUser> HeladacUsers { get; set; }
+        //public virtual DbSet<CredentialUser> CredentialUsers { get; set; }
         public virtual DbSet<HelmUser> HelmUsers { get; set; }
         public virtual DbSet<SentMail> SentMails { get; set; }
-
-        public HeladacDbContext() : base(new DbContextOptionsBuilder<HeladacDbContext>().Options, new OperationalStoreOptionsMigrations())
-        {
-            //var optionsBuilder = new DbContextOptionsBuilder<HeladacDbContext>();
-            ////optionsBuilder.UseSqlServer(Configuration.GetConnectionStringSecureValue("DefaultConnection"));
-            //_context = new HeladacDbContext(optionsBuilder.Options);
-        }
 
         public HeladacDbContext(
             DbContextOptions options,
@@ -63,11 +57,11 @@ namespace HeladacWeb.Data
                 .IsUnique();
 
             modelBuilder.Entity<HelmUser>()
-                .HasKey(helmUser => new { helmUser.Id })
+                .HasKey(helmUser => new { helmUser.id })
                 .IsClustered(false);
 
             modelBuilder.Entity<HelmUser>()
-                .HasIndex(helmUser => new { helmUser.heladacUserId, helmUser.Id })
+                .HasIndex(helmUser => new { helmUser.heladacUserId, helmUser.id })
                 .HasName("HelmUser_HeladacUser")
                 .IsUnique()
                 .IsClustered(true);

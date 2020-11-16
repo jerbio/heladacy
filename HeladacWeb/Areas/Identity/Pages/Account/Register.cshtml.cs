@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using HeladacWeb.Data;
+using HeladacWeb.Services;
 
 namespace HeladacWeb.Areas.Identity.Pages.Account
 {
@@ -22,23 +24,23 @@ namespace HeladacWeb.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<HeladacUser> _signInManager;
         private readonly UserManager<HeladacUser> _userManager;
-        private readonly SignInManager<HelmUser> _helmSignInManager;
-        private readonly UserManager<HelmUser> _helmUserManager;
+        //private readonly SignInManager<HelmUser> _helmSignInManager;
+        //private readonly UserManager<HelmUser> _helmUserManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<HeladacUser> userManager,
             SignInManager<HeladacUser> signInManager,
-            UserManager<HelmUser> helmUserManager,
-            SignInManager<HelmUser> helmSignInManager,
+            //UserManager<HelmUser> helmUserManager,
+            //SignInManager<HelmUser> helmSignInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _helmUserManager = helmUserManager;
-            _helmSignInManager = helmSignInManager;
+            //_helmUserManager = helmUserManager;
+            //_helmSignInManager = helmSignInManager;
             _logger = logger;
             _emailSender = emailSender;
         }
@@ -75,17 +77,27 @@ namespace HeladacWeb.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task createHelmUser(HeladacUser heladacUser)
+        public async Task createHelmUser(HeladacUser heladacUser, HeladacDbContext context = null)
         {
-            string email = Utility.generateHelmEmail();
-            string password = Utility.generateHelmPassword();
-            var helmUser = new HelmUser { UserName = email, Email = email };
-            helmUser.heladacUserId = heladacUser.Id;
-            var result = await _helmUserManager.CreateAsync(helmUser, password);
-            if (result.Succeeded)
+            if (context == null)
             {
-                _logger.LogInformation("Helm User created with id ."+ helmUser.Id);
-            }
+                context = new HeladacDBContextFactory().CreateDbContext(new string[0]);
+    }
+            Tuple <string, string> heladacEmalTuple = Utility.generateHelmEmail();
+            string email = heladacEmalTuple.Item1;
+            string username = heladacEmalTuple.Item2;
+            string password = Utility.generateHelmPassword();
+            EncryptionService encryptionService = new EncryptionService();
+            string passwordHash = encryptionService.Encrypt(password);
+            var helmUser = new HelmUser { username = username, email = email, passwordHash = passwordHash };
+            helmUser.heladacUserId = heladacUser.Id;
+            context.HelmUsers.Add(helmUser);
+            await context.SaveChangesAsync().ConfigureAwait(false);
+            //var result = await _helmUserManager.CreateAsync(helmUser, password);
+            //if (result.Succeeded)
+            //{
+            //    _logger.LogInformation("Helm User created with id ."+ helmUser.id);
+            //}
         }
 
 

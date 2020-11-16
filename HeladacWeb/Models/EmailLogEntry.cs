@@ -13,6 +13,7 @@ namespace HeladacWeb.Models
     {
 
         bool _isRead { get; set; } = false;
+        HelmUser _receiver { get; set; }
         public bool isDeleted
         {
             get
@@ -35,6 +36,14 @@ namespace HeladacWeb.Models
             }
         }
 
+        public virtual HelmUser receiver
+        { 
+            get
+            {
+                return _receiver;
+            }
+        }
+
 
         #region dbEntries
         public string _id = Guid.NewGuid().ToString();
@@ -51,10 +60,23 @@ namespace HeladacWeb.Models
         }
         public long creationTime_DB { get; set; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
+
+
         [Required]
         public string userId { get; set; }
         [ForeignKey("userId")]
-        public HelmUser receiver_DB { get; set; }
+        public HelmUser receiver_DB { 
+            get {
+                return _receiver;
+            }
+            set {
+                _receiver = value;
+            } 
+        }
+        [Required]
+        public string heladacUserId { get; set; }
+        [ForeignKey("heladacUserId")]
+        public HeladacUser heladacUser_DB { get; set; }
         [Required]
         public string senderEmail_DB { get; set; }
         [Required]
@@ -73,20 +95,40 @@ namespace HeladacWeb.Models
                 _isRead = value;
             } 
         }
+        JArray _readToggleHistory = null;
         [NotMapped]
-        public JArray readToggleHistory {get; set;}
-        public string readToggleHistory_DB { 
-            get 
+        public JArray readToggleHistory
+        {
+            get
+            {
+                return (_readToggleHistory ?? (_readToggleHistory = new JArray()));
+            }
+            set
+            {
+                _readToggleHistory = value;
+            }
+        }
+        public string readToggleHistory_DB
+        {
+            get
             {
                 return this.readToggleHistory.ToString();
             }
-            set 
+            set
             {
                 this.readToggleHistory = JArray.Parse(value);
-            } 
+            }
         }
+        JArray _archiveToggleHistory = null;
         [NotMapped]
-        public JArray archiveToggleHistory { get; set; }
+        public JArray archiveToggleHistory { 
+            get {
+                return (_archiveToggleHistory ?? (_archiveToggleHistory = new JArray()));
+            } 
+            set {
+                _archiveToggleHistory = value;
+            }
+        }
         public string archiveToggleHistory_DB
         {
             get
