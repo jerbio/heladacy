@@ -24,23 +24,17 @@ namespace HeladacWeb.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<HeladacUser> _signInManager;
         private readonly UserManager<HeladacUser> _userManager;
-        //private readonly SignInManager<HelmUser> _helmSignInManager;
-        //private readonly UserManager<HelmUser> _helmUserManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<HeladacUser> userManager,
             SignInManager<HeladacUser> signInManager,
-            //UserManager<HelmUser> helmUserManager,
-            //SignInManager<HelmUser> helmSignInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            //_helmUserManager = helmUserManager;
-            //_helmSignInManager = helmSignInManager;
             _logger = logger;
             _emailSender = emailSender;
         }
@@ -82,7 +76,7 @@ namespace HeladacWeb.Areas.Identity.Pages.Account
             if (context == null)
             {
                 context = new HeladacDBContextFactory().CreateDbContext(new string[0]);
-    }
+            }
             Tuple <string, string> heladacEmalTuple = Utility.generateHelmEmail();
             string email = heladacEmalTuple.Item1;
             string username = heladacEmalTuple.Item2;
@@ -93,11 +87,6 @@ namespace HeladacWeb.Areas.Identity.Pages.Account
             helmUser.heladacUserId = heladacUser.Id;
             context.HelmUsers.Add(helmUser);
             await context.SaveChangesAsync().ConfigureAwait(false);
-            //var result = await _helmUserManager.CreateAsync(helmUser, password);
-            //if (result.Succeeded)
-            //{
-            //    _logger.LogInformation("Helm User created with id ."+ helmUser.id);
-            //}
         }
 
 

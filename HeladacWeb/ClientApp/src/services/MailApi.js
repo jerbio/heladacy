@@ -26,6 +26,7 @@ export default class MailApi extends Api {
     }
 
     async getMails(mailArgs) {
+        debugger
         let url = this.url + 'usermails'
         let header = await this.getHeader()
         console.log(header)

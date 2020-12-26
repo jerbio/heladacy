@@ -22,6 +22,7 @@ namespace HeladacWeb
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -41,6 +42,18 @@ namespace HeladacWeb
                 appName = "heladackid";
                 blobUri = "https://heladackid.blob.core.windows.net/";
                 helmUserKeyvaultUri = "https://heladackid.vault.azure.net/keys/helmuser/d94a50057451408bb0b0880c5d436f96";
+
+                //services.AddCors(options =>
+                //{
+                //    options.AddPolicy(name: MyAllowSpecificOrigins,
+                //                      builder =>
+                //                      {
+                //                          builder
+                //                            .AllowAnyOrigin()
+                //                            .AllowAnyMethod()
+                //                            .AllowAnyHeader();
+                //                      });
+                //});
                 services.AddDataProtection()
                 .PersistKeysToFileSystem(new DirectoryInfo(@"c:\dataprotection-persistkeys"))
                 .AddKeyManagementOptions(options =>
@@ -51,6 +64,7 @@ namespace HeladacWeb
                 services
                     .AddDefaultIdentity<HeladacUser>(options => options.SignIn.RequireConfirmedAccount = false)
                     .AddEntityFrameworkStores<HeladacDbContext>();
+                
             }
             else
             {
@@ -96,59 +110,16 @@ namespace HeladacWeb
             });
         }
 
-        //public static IServiceCollection AddCustomDataProtection(this IServiceCollection serviceCollection)
-        //{
-        //    bool isDevEnvironment = true;
-        //    string appName = "";
-        //    string blobUri = "";
-        //    string helmUserKeyvaultUri = "";
-        //    if (isDevEnvironment)
-        //    {
-        //        appName = "heladackid";
-        //    }
-        //    else
-        //    {
-        //        appName = "heladac";
-        //    }
-
-        //    var store = new X509Store(StoreLocation.CurrentUser);
-        //    store.Open(OpenFlags.ReadOnly);
-        //    var cert = store.Certificates.Find(X509FindType.FindByThumbprint, config["CertificateThumbprint"], false);
-
-        //    var builder = serviceCollection
-        //    .AddDataProtection()
-        //    .SetApplicationName(appName);
-        //    #if DEBUG
-        //                builder
-        //                    .PersistKeysToFileSystem(new DirectoryInfo(@"c:\dataprotection-persistkeys"))
-        //                    .AddKeyManagementOptions(options =>
-        //                    {
-        //                        options.NewKeyLifetime = new TimeSpan(365, 0, 0, 0);
-        //                        options.AutoGenerateKeys = true;
-        //                    });
-        //    #else
-        //        serviceCollection
-        //            .AddOptions<KeyManagementOptions>()
-        //            .Configure<IConfiguration>((options, configuration) =>
-        //            {
-        //                configuration.GetSection("KeyManagement").Bind(options);
-        //            })
-        //            .Configure<MyAppOptions>((options, myAppOptions) => 
-        //            {
-        //                options.XmlRepository = new Microsoft.AspNetCore.DataProtection.StackExchangeRedis.RedisXmlRepository(
-        //                    () => ConnectionMultiplexer.Connect(myAppOptions.RedisConfigurationString).GetDatabase(),
-        //                    myAppOptions.DataProtectionRedisKeyForPersistKeys);
-        //            });
-        //        //.PersistKeysToStackExchangeRedis(ConnectionMultiplexer.Connect("<URI>"), "DataProtection-Keys");
-        //    #endif
-        //    return serviceCollection;
-        //}
-
+        
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
+                //app.UseCors(builder => {
+                //    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                //});
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
