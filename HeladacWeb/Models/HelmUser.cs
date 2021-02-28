@@ -12,6 +12,15 @@ namespace HeladacWeb.Models
     public class HelmUser: CredentialUser
     {
         private static readonly HeladacWeb.Services.EncryptionService encryptionService = new Services.EncryptionService();
+        private static Dictionary<CredentialServiceType, TimeSpan> credentialTypeTODefaultExpiration = new Dictionary<CredentialServiceType, TimeSpan>() {
+            { CredentialServiceType.netflix, TimeSpan.FromDays(30) },
+            { CredentialServiceType.none, TimeSpan.FromDays(-1) }
+        };
+        [NotMapped]
+        private DateTimeOffset _creationTime { get; set; } = DateTimeOffset.UtcNow;
+
+        [NotMapped]
+        private DateTimeOffset _expirationTime { get; set; } = new DateTimeOffset();
 
         public string fullName { 
             get {
@@ -21,14 +30,87 @@ namespace HeladacWeb.Models
             } 
         }
 
-        public string address1 { get; }
-        public string address2 { get; }
-        public string city { get; }
-        public string state { get; }
-        public string country { get; }
-        public string postal { get; }
-        public bool isDeleted { get; set; }
-        public long creationTimeMs_DB { get; set; }
+        public string address1 { 
+            get {
+                return address1_DB;
+            } 
+        }
+        public string address2
+        {
+            get
+            {
+                return address2_DB;
+            }
+        }
+        public string city
+        {
+            get
+            {
+                return city_DB;
+            }
+        }
+        public string state
+        {
+            get
+            {
+                return state_DB;
+            }
+        }
+        public string country
+        {
+            get
+            {
+                return country_DB;
+            }
+        }
+        public string postal
+        {
+            get
+            {
+                return postal_DB;
+            }
+        }
+
+
+        public DateTimeOffset creationTime
+        {
+            get
+            {
+                return _creationTime;
+            }
+        }
+
+        public DateTimeOffset expirationTime
+        {
+            get
+            {
+                return _expirationTime;
+            }
+        }
+
+
+
+        public bool isDeleted_DB { get; set; }
+        public long creationTimeMs_DB 
+        {
+            get {
+                return _creationTime.ToUnixTimeMilliseconds();
+            } 
+            set {
+                _creationTime = DateTimeOffset.FromUnixTimeMilliseconds(value);
+            }
+        }
+        public long expirationTimeMs_DB
+        {
+            get
+            {
+                return _expirationTime.ToUnixTimeMilliseconds();
+            }
+            set
+            {
+                _expirationTime = DateTimeOffset.FromUnixTimeMilliseconds(value);
+            }
+        }
         public bool isActive { get; set; }
         public string decryptedPasssword { 
             get
@@ -62,10 +144,15 @@ namespace HeladacWeb.Models
         public string country_DB { get; set; }
         public string postal_DB { get; set; }
 
-        public static HelmUser generateHelmUser(HeladacUser heladcUser)
+        public static HelmUser generateHelmUser(HeladacUser heladcUser, CredentialService credentialService)
         {
             HelmUser retValue = new HelmUser();
             retValue.heladacUser_db = heladcUser;
+            string password = Utility.generateHelmPassword();
+            string encryptedPassword = encryptionService.Encrypt(password);
+            retValue.passwordHash = encryptedPassword;
+            var emailAndUserName = Utility.generateHelmEmail();
+            retValue.username = emailAndUserName.Item2;
             return retValue;
 
         }

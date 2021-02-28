@@ -107,6 +107,7 @@ namespace HeladacWeb
             string retValue = RandomString(seedString: passwordChars);
             return retValue;
         }
+
         private static readonly string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         private static readonly string passwordChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_)(*&^%$#@!{}:\" <>?,./;\'[]";
         private static HashSet<string> _helmDomains = new HashSet<string>( new string[] { "heladackid.com", "heladac.com" });

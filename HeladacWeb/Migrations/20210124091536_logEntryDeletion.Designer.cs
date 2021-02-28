@@ -4,14 +4,16 @@ using HeladacWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HeladacWeb.Migrations
 {
     [DbContext(typeof(HeladacDbContext))]
-    partial class HeladacDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210124091536_logEntryDeletion")]
+    partial class logEntryDeletion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -262,9 +264,6 @@ namespace HeladacWeb.Migrations
 
                     b.Property<string>("email")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("expirationTimeMs_DB")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("firstName")
                         .HasColumnType("nvarchar(max)");

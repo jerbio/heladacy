@@ -35,7 +35,7 @@ namespace HeladacWeb.Models
         public HelmUser heladacUser_DB { get; set; }
 
         [NotMapped]
-        public CredentialService credentialService { get; set; } = CredentialService.none;
+        public CredentialServiceType credentialService { get; set; } = CredentialServiceType.none;
         public string credentialService_DB
         {
             get
@@ -46,11 +46,11 @@ namespace HeladacWeb.Models
             {
                 if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
                 {
-                    credentialService = CredentialService.none;
+                    credentialService = CredentialServiceType.none;
                 }
                 else
                 {
-                    credentialService = Utility.ParseEnum<CredentialService>(value);
+                    credentialService = Utility.ParseEnum<CredentialServiceType>(value);
                 }
             }
         }

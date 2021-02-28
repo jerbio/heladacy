@@ -3,6 +3,7 @@ import Constants from '../Constants'
 import React, { Component } from "react";
 
 import MailApi from '../services/MailApi'
+import CredentialApi from '../services/CredentialApi'
 
 export class MailList extends Component {
     constructor(props) {
@@ -10,7 +11,8 @@ export class MailList extends Component {
         this.state = {
             currentCount: 0,
             api: {
-                mail: new MailApi()
+                mail: new MailApi(),
+                credential: new CredentialApi()
             },
             listConfig: {
                 index: 0,
@@ -32,7 +34,7 @@ export class MailList extends Component {
         })
         this.state.api.mail.getMails()
           .then((response) => {
-            debugger
+
             this.setState({
               dataLoad: {
                 status: Constants.loadStatus.finished,
@@ -49,7 +51,30 @@ export class MailList extends Component {
             })
           })
     }
-    
+
+    generateCredential() {
+        debugger
+        let credArgs = {
+            url: 'netflix.com',
+            domain: 'netflix.com'
+        }
+        this.state.api.credential.createCredential(credArgs).then((response) => {
+
+            console.log(response)
+            let retValue = response.json().then((credentialGenerated) => {
+                return credentialGenerated
+            }).catch((err) => {
+                throw err
+            });
+            return retValue;
+        }).catch((err) => {
+
+            console.log(err)
+            //let retValue = response.json();
+            //return retValue;
+        })
+    }
+
     
     
     render () {
@@ -78,6 +103,7 @@ export class MailList extends Component {
         return (
             <div>
                 <div>{status}</div>
+                <button onClick={this.generateCredential.bind(this)}>{"Create credential"}</button>
                 <div>
                     {mailRows}
                 </div>
@@ -100,15 +126,17 @@ class MailRow extends Component {
 
         return (
             <div>
-                <div>
+                <span>
                     {sender}
-                </div>
-                <div>
+                </span>
+                <span>||</span>
+                <span>
                     {subject}
-                </div>
-                <div>
+                </span>
+                <span>||</span>
+                <span>
                     {receiverLabelString}
-                </div>
+                </span>
             </div>
         )
     }
