@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import authService from '../../authorization/AuthorizeService';
-import { ApplicationPaths } from '../../authorization/ApiAuthorizationConstants';
+import authService from './AuthorizeService';
+import { ApplicationPaths } from './ApiAuthorizationConstants';
 
 export class LoginMenu extends Component {
     constructor(props) {

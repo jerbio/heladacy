@@ -1,8 +1,8 @@
 import React from 'react'
 import { Component } from 'react';
-import authService from '../../authorization/AuthorizeService';
-import { AuthenticationResultStatus } from '../../authorization/AuthorizeService';
-import { LoginActions, QueryParameterNames, ApplicationPaths } from '../../authorization/ApiAuthorizationConstants';
+import authService from './AuthorizeService';
+import { AuthenticationResultStatus } from './AuthorizeService';
+import { LoginActions, QueryParameterNames, ApplicationPaths } from './ApiAuthorizationConstants';
 
 // The main responsibility of this component is to handle the user's login process.
 // This is the starting point for the login process. Any component that needs to authenticate
@@ -118,9 +118,9 @@ export class Login extends Component {
     }
 
     redirectToApiAuthorizationPath(apiAuthorizationPath) {
-        const redirectUrl = `${window.location.origin}${apiAuthorizationPath}`;
+        const redirectUrl = `${window.location.origin}/${apiAuthorizationPath}`;
         // It's important that we do a replace here so that when the user hits the back arrow on the
-        // browser he gets sent back to where it was on the app instead of to an endpoint on this
+        // browser they get sent back to where it was on the app instead of to an endpoint on this
         // component.
         window.location.replace(redirectUrl);
     }

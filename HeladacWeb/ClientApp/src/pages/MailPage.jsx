@@ -33,7 +33,64 @@ export class MailPage extends Component {
     this.setState({
       currentCount: this.state.currentCount + 1
     });
-  }
+    }
+
+    componentDidMount() {
+        debugger
+        const currentOrigin = window.location.origin
+        window.addEventListener("message", (event) => {
+            
+            if (event.origin !== currentOrigin) {
+                console.log(event.origin)
+                console.log(event.data)
+                debugger
+                this.handleChromeWebMessage(event)
+
+                return;
+            }
+        }, false);
+    }
+
+    handleChromeWebMessage(postMessageData) {
+        if (postMessageData.data && postMessageData.data.heladacChromeStore) {
+            let heladacChromeStore = postMessageData.data.heladacChromeStore
+            let isUserFound = false
+            if (heladacChromeStore && heladacChromeStore.oidcStore) {
+                let heladacUserStore = heladacChromeStore
+                let oidcKeys = Object.keys(heladacUserStore.oidcStore)
+                let callBackId = heladacChromeStore.callBackId
+                oidcKeys.forEach((oidcKey) => {
+                    isUserFound = true
+                    let oidcData = heladacUserStore.oidcStore[oidcKey]
+                    localStorage.setItem(oidcKey, oidcData);
+                })
+                this.confirmUserStoreUpdate(postMessageData.origin, isUserFound, callBackId)
+            }
+        }
+    }
+
+    confirmUserStoreUpdate(origin, isUserFound, callBackId) {
+        debugger
+        let serverPath = origin +'/popup.html'
+        let iFrameElement = document.createElement("iframe");
+        iFrameElement.setAttribute('src', serverPath);
+        iFrameElement.style.display = 'none'
+        document.body.appendChild(iFrameElement);
+        let windowForPost = iFrameElement.contentWindow
+        setTimeout(() => {
+            let data = {
+                heladacDataTransfer: {
+                    oidcStoreTransfer: {
+                        isUserFound: isUserFound,
+                        callBackId
+                    }
+                }
+            }
+            windowForPost.postMessage(data, '*');
+            
+        }
+        , 3000)
+    }
 
   render() {
 

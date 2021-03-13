@@ -2,8 +2,6 @@
 @using HeladacWeb.Models;
 @inject SignInManager<HeladacUser> SignInManager
 @inject UserManager<HeladacUser> UserManager
-@*@inject SignInManager<HelmUser> helmSignInManager
-@inject UserManager<HelmUser> helmUserManager*@
 
 @{
     string returnUrl = null;
@@ -32,7 +30,7 @@
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@returnUrl">Register</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@returnUrl">Login</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login"asp-route-returnUrl="@returnUrl">Login</a>
         </li>
     }
 </ul>
