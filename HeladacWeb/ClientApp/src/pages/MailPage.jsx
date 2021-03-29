@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 
 //App Components
-import {MailList} from '../components/MailList'
+import MailList from '../components/MailList'
 
 //Api and services
 import Constants from '../Constants'

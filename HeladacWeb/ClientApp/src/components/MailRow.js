@@ -12,16 +12,16 @@ const MailRow = (props) => {
     return(
         <div>
             <span>
-                    {sender}
-                </span>
-                <span>||</span>
-                <span>
-                    {subject}
-                </span>
-                <span>||</span>
-                <span>
-                    {receiverLabelString}
-                </span>
+                {sender}
+            </span>
+            <span>||</span>
+            <span>
+                {subject}
+            </span>
+            <span>||</span>
+            <span>
+                {receiverLabelString}
+            </span>
 
         </div>
     )
