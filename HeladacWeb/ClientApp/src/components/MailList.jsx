@@ -2,6 +2,8 @@ import Constants from '../Constants'
 
 import React, { Component } from "react";
 
+import MailRow from './MailRow'
+
 import MailApi from '../services/MailApi'
 import CredentialApi from '../services/CredentialApi'
 
@@ -112,32 +114,32 @@ export class MailList extends Component {
     }
 }
 
-class MailRow extends Component {
-    constructor(props) {
-        super(props);
-    }
+// class MailRow extends Component {
+//     constructor(props) {
+//         super(props);
+//     }
 
-    render() {
-        const {sender, subject, receiver} = this.props.mail
-        let receiverLabelString = ''
-        if (receiver) {
-            receiverLabelString = receiver.name || receiver.address
-        }
+//     render() {
+//         const {sender, subject, receiver} = this.props.mail
+//         let receiverLabelString = ''
+//         if (receiver) {
+//             receiverLabelString = receiver.name || receiver.address
+//         }
 
-        return (
-            <div>
-                <span>
-                    {sender}
-                </span>
-                <span>||</span>
-                <span>
-                    {subject}
-                </span>
-                <span>||</span>
-                <span>
-                    {receiverLabelString}
-                </span>
-            </div>
-        )
-    }
-}
+//         return (
+//             <div>
+//                 <span>
+//                     {sender}
+//                 </span>
+//                 <span>||</span>
+//                 <span>
+//                     {subject}
+//                 </span>
+//                 <span>||</span>
+//                 <span>
+//                     {receiverLabelString}
+//                 </span>
+//             </div>
+//         )
+//     }
+// }

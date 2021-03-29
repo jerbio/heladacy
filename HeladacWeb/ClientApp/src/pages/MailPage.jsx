@@ -97,7 +97,7 @@ export class MailPage extends Component {
     return (
       <div>
         <h1>Mail</h1>
-        <MailList></MailList>
+        <MailList/>
         <h1>Heladac Mail is here</h1>
       </div>
     );
