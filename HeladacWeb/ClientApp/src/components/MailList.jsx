@@ -53,7 +53,7 @@ const MailList = (props) => {
     }, [])
 
     const generateCredential = () => {
-        debugger
+        // debugger
         let credArgs = {
             url: 'netflix.com',
             domain: 'netflix.com'
