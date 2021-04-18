@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace HeladacWeb.Models
 {
-    public abstract class CredentialService
+    public class CredentialService
     {
+        protected string _id = Guid.NewGuid().ToString();
+        protected string _Domain = "";
+        protected string _Url = "";
         [NotMapped]
         public virtual CredentialServiceType ServiceType  { get; set; }
         public virtual string ServiceType_DB {
@@ -28,8 +31,54 @@ namespace HeladacWeb.Models
             }
         }
 
+        public virtual string Url
+        {
+            get
+            {
+                return _Url;
+            }
+            set
+            {
+                _Url = value;
+            }
+        }
+
+        public virtual string Domain_DB
+        {
+            get
+            {
+                return _Domain;
+            }
+            set
+            {
+                _Domain = value;
+            }
+        }
 
 
+        public virtual string Url_DB
+        {
+            get
+            {
+                return _Url;
+            }
+            set
+            {
+                _Url = value;
+            }
+        }
+
+        public string id
+        {
+            get
+            {
+                return _id;
+            }
+            set
+            {
+                _id = value;
+            }
+        }
 
         static public CredentialService createCredentialServiceByUrl(string url)
         {
@@ -47,8 +96,7 @@ namespace HeladacWeb.Models
                     retValue = new NoneCredentialService();
                 }
 
-
-
+                retValue.Url = url;
 
                 return retValue;
             }

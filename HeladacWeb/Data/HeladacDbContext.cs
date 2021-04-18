@@ -1,5 +1,4 @@
-﻿//using FluentAssertions.Common;
-using HeladacWeb.Models;
+﻿using HeladacWeb.Models;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
@@ -18,9 +17,9 @@ namespace HeladacWeb.Data
         public virtual DbSet<EmailLogEntry> EmailLogEntrys { get; set; }
         public virtual DbSet<Credential> Credentials { get; set; }
         public virtual DbSet<HeladacUser> HeladacUsers { get; set; }
-        //public virtual DbSet<CredentialUser> CredentialUsers { get; set; }
         public virtual DbSet<HelmUser> HelmUsers { get; set; }
         public virtual DbSet<SentMail> SentMails { get; set; }
+        public virtual DbSet<CredentialService> CredentialServices { get; set; }
 
         public HeladacDbContext(
             DbContextOptions options,
@@ -69,6 +68,11 @@ namespace HeladacWeb.Data
             modelBuilder.Entity<Email>()
                 .HasIndex(emailEntry => new { emailEntry.emailId_DB})
                 .HasName("Email_EmailId")
+                .IsUnique();
+
+            modelBuilder.Entity<CredentialService>()
+                .HasIndex(credentialService => new { credentialService.Domain_DB })
+                .HasName("CredentialService_Domain")
                 .IsUnique();
 
         }

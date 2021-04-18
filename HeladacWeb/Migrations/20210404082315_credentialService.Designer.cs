@@ -4,14 +4,16 @@ using HeladacWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HeladacWeb.Migrations
 {
     [DbContext(typeof(HeladacDbContext))]
-    partial class HeladacDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210404082315_credentialService")]
+    partial class credentialService
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,7 +58,7 @@ namespace HeladacWeb.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ServiceType_DB")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
@@ -66,10 +68,10 @@ namespace HeladacWeb.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("Domain_DB")
+                    b.HasIndex("ServiceType_DB", "Domain_DB")
                         .IsUnique()
                         .HasDatabaseName("CredentialService_Domain")
-                        .HasFilter("[Domain_DB] IS NOT NULL");
+                        .HasFilter("[ServiceType_DB] IS NOT NULL AND [Domain_DB] IS NOT NULL");
 
                     b.ToTable("CredentialServices");
                 });
@@ -281,7 +283,7 @@ namespace HeladacWeb.Migrations
                     b.Property<long>("creationTimeMs_DB")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("credentialServiceId")
+                    b.Property<string>("credentialService_DBid")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("email")
@@ -327,7 +329,7 @@ namespace HeladacWeb.Migrations
                     b.HasKey("id")
                         .IsClustered(false);
 
-                    b.HasIndex("credentialServiceId");
+                    b.HasIndex("credentialService_DBid");
 
                     b.HasIndex("heladacUserId", "id")
                         .IsUnique()
@@ -663,7 +665,7 @@ namespace HeladacWeb.Migrations
                 {
                     b.HasOne("HeladacWeb.Models.CredentialService", "credentialService_DB")
                         .WithMany()
-                        .HasForeignKey("credentialServiceId");
+                        .HasForeignKey("credentialService_DBid");
 
                     b.HasOne("HeladacWeb.Models.HeladacUser", "heladacUser_db")
                         .WithMany()

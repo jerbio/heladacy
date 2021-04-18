@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace HeladacWeb.Models
 {
+    /// <summary>
+    /// Class holds the genereated credential for a user
+    /// </summary>
     [Table("HelmUsers")]
     public class HelmUser: CredentialUser
     {
@@ -136,6 +139,9 @@ namespace HeladacWeb.Models
         public string heladacUserId { get; set; }
         [ForeignKey("heladacUserId")]
         public HeladacUser heladacUser_db { get; set; }
+        public string credentialServiceId { get; set; }
+        [ForeignKey("credentialServiceId")]
+        public CredentialService credentialService_DB { get; set; }
 
         public string address1_DB { get; set; }
         public string address2_DB { get; set; }
@@ -143,6 +149,7 @@ namespace HeladacWeb.Models
         public string state_DB { get; set; }
         public string country_DB { get; set; }
         public string postal_DB { get; set; }
+        
 
         public static HelmUser generateHelmUser(HeladacUser heladcUser, CredentialService credentialService)
         {
@@ -153,6 +160,7 @@ namespace HeladacWeb.Models
             retValue.passwordHash = encryptedPassword;
             var emailAndUserName = Utility.generateHelmEmail();
             retValue.username = emailAndUserName.Item2;
+            retValue.credentialService_DB = credentialService;
             return retValue;
 
         }
