@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using HeladacWeb.Models;
 using HeladacWeb.Models.Params;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HeladacWeb.Controllers
 {
+    [EnableCors("MyPolicy")]
     [Route("api/[controller]")]
     //[Authorize]
     [ApiController]
@@ -23,7 +25,17 @@ namespace HeladacWeb.Controllers
             string url = credentialParam.fullUri;
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             HeladacUser heladacUser = context.Users.Find(userId);
-            HelmUser helmUser = HelmUser.generateHelmUser(heladacUser, credentialParam.getCredentialService(url));
+            CredentialService generatedCredentialService = credentialParam.getCredentialService(url, credentialParam.domain);
+            
+            CredentialService credentialService = generatedCredentialService;
+            CredentialService retrievedCredentialService = context.CredentialServices.SingleOrDefault(eachCredentialService => eachCredentialService.Domain_DB == generatedCredentialService.Domain_DB);
+            
+            if(retrievedCredentialService != null)
+            {
+                credentialService = retrievedCredentialService;
+            }
+
+            HelmUser helmUser = HelmUser.generateHelmUser(heladacUser, credentialService);
             context.HelmUsers.Add(helmUser);
             await context.SaveChangesAsync().ConfigureAwait(false);
             return Ok(helmUser);
@@ -32,13 +44,13 @@ namespace HeladacWeb.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetCredentials(CredentialParam credentialParam)
+        public async Task<IActionResult> GetCredentials([FromQuery] CredentialParam credentialParam)
         {
             string url = credentialParam.fullUri;
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             HeladacUser heladacUser = context.Users.Find(userId);
 
-            CredentialService credentialService = credentialParam.getCredentialService(url);
+            CredentialService credentialService = credentialParam.getCredentialService(url, credentialParam.domain);
             IQueryable<CredentialService> credentialServices;
             if (credentialService.ServiceType == CredentialServiceType.none)
             {

@@ -80,14 +80,24 @@ namespace HeladacWeb.Models
             }
         }
 
-        static public CredentialService createCredentialServiceByUrl(string url)
+        static public CredentialService createCredentialServiceByUrl(string url, string domain)
         {
             if(url.isNot_NullEmptyOrWhiteSpace())
             {
+                Uri urlUri = null;
+
+                try
+                {
+                    urlUri = new Uri(url);
+                }
+                catch (Exception exception)
+                {
+                    throw new Exception("Invalid url provided");
+                }
                 CredentialService retValue = null;
                 string lowerCaseString = url.ToLower();
 
-                bool isNetflixUrl = NetflixCredentialService.isNetflixUrl(url);
+                bool isNetflixUrl = NetflixCredentialService.isNetflixUrl(urlUri.AbsoluteUri);
                 if(isNetflixUrl)
                 {
                     retValue = new NetflixCredentialService();
@@ -97,7 +107,34 @@ namespace HeladacWeb.Models
                 }
 
                 retValue.Url = url;
+                Uri domainUri = null;
+                if(domain.isNot_NullEmptyOrWhiteSpace())
+                {
+                    try
+                    {
+                        domainUri = new Uri(domain);
+                    }
+                    catch(Exception exception)
+                    {
+                        try
+                        {
+                            domainUri = new Uri(url);
+                        }
+                        catch (Exception domainException)
+                        {
+                            throw new Exception("Invalid domain url provided");
+                        }
+                    }
+                } else
+                {
+                    retValue._Domain = urlUri.Host;
+                }
 
+                if(domainUri!=null)
+                {
+                    retValue._Domain = domainUri.Host;
+                }
+                
                 return retValue;
             }
             throw new ArgumentNullException("url", "The url cannot be null or empty");

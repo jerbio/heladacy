@@ -10,9 +10,9 @@ namespace HeladacWeb.Models.Params
         public string domain { get; set; }
         public string fullUri { get; set; }
 
-        public CredentialService getCredentialService(string url)
+        public CredentialService getCredentialService(string url, string domain)
         {
-            CredentialService credentialService = CredentialService.createCredentialServiceByUrl(url);
+            CredentialService credentialService = CredentialService.createCredentialServiceByUrl(url, domain);
             return credentialService;
         }
     }

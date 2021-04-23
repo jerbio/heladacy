@@ -81,31 +81,6 @@ namespace HeladacWeb.Controllers
         }
 
         [HttpGet]
-        //[Authorize]
-        [Route("api/Mail")]
-        public async Task<IActionResult> Mail([FromQuery] EmailParam emailParam)
-        {
-            if(emailParam.id.isNot_NullEmptyOrWhiteSpace())
-            {
-                IQueryable<Email> emailQuery = context.Emails;
-                if (emailParam.includeMailContent)
-                {
-                    emailQuery = emailQuery.Include(email => email.mailContent_DB);
-                }
-                Email email = await emailQuery.SingleOrDefaultAsync((emails) => emails.id == emailParam.id).ConfigureAwait(false);
-
-                JObject retJObject = JObject.FromObject(email);
-                JsonResult retValue = new JsonResult(retJObject);
-                return retValue;
-            } else
-            {
-                var heladacError = new HeladacError();
-                heladacError.errorCode = HeladacErrorCode.Email_Id_Missing;
-                return BadRequest(heladacError);
-            }
-        }
-
-        [HttpGet]
         [Authorize]
         [Route("usermails")]
         public async Task<IActionResult> UserMails([FromQuery] EmailParam emailParam)
