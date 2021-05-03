@@ -27,8 +27,10 @@ Heladac is built on .net core stack and [react js](https://github.com/facebook/r
 
 
 ## How to Launch
-Since this is a .net core & reactjs web app this has all the default launch parameters/procedure of .net core app. We strongly suggest using Visual Studio 2019(not vs code) to launch the solution. You can execute the [heladacy.sln]( https://github.com/jerbio/heladacy/blob/main/heladacy.sln) file. Once you launch the file you can launch the web app with ctrl+f5. 
-If you do not have visual studio installed then you’d need to install [dotnet](https://dotnet.microsoft.com/download) for your OS. Once installed you’d need open the HeladacWeb folder in your terminal and then execute the command ‘dotnet run’.
+Since this is a .net core & reactjs web app this has all the default launch parameters/procedure of .net core app. We strongly suggest using [Visual Studio 2019 or later](https://visualstudio.microsoft.com/)(not vs code) to launch the solution. You can execute the [heladacy.sln]( https://github.com/jerbio/heladacy/blob/main/heladacy.sln) file. Once you launch the file you can launch the web app with ctrl+f5. 
+
+If you do not have visual studio installed then you’d need to install [dotnet](https://dotnet.microsoft.com/download) for your OS. 
+Once installed you’d need open the HeladacWeb folder in your terminal and then execute the command ‘dotnet run’.
 
 @2j3rbi4
 
