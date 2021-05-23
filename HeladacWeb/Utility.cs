@@ -1,4 +1,5 @@
 ﻿using MailKit;
+using RandomNameGeneratorLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace HeladacWeb
     {
         public const int defaultPageSize = 20;
         public const int defaultPageIndex = 0;
-
+        public static readonly PersonNameGenerator personNameGenerator = new PersonNameGenerator();
         /// <summary>
         /// Function takes a string and checks if the string is a valid email
         /// </summary>
@@ -90,6 +91,10 @@ namespace HeladacWeb
             retValue = retValue.ToLower();
             return retValue;
         }
+        /// <summary>
+        /// Function generates a helm email. The first item is the email and the second is the username 
+        /// </summary>
+        /// <returns></returns>
         public static Tuple<string, string> generateHelmEmail()
         {
             string userName = RandomString();

@@ -66,6 +66,16 @@ namespace HeladacWeb.Controllers
                 eachHelmUser => eachHelmUser.credentialServiceId,
                 (eachCredentialService, eachHelmUser) => eachHelmUser).OrderByDescending(eachHelmUser => eachHelmUser.creationTimeMs_DB).FirstOrDefault();
             
+            
+            if(retValue!=null)
+            {
+                if(!retValue.email.isNot_NullEmptyOrWhiteSpace())
+                {
+                    context.Entry(retValue).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
+                    string domain = Utility.helmDomains[0];
+                    retValue.email = retValue.username + "@" + domain;
+                }
+            }
             return Ok(retValue);
         }
     }

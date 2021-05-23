@@ -156,10 +156,13 @@ namespace HeladacWeb.Models
             HelmUser retValue = new HelmUser();
             retValue.heladacUser_db = heladcUser;
             string password = Utility.generateHelmPassword();
+            retValue.firstName = Utility.personNameGenerator.GenerateRandomFirstName();
+            retValue.lastName = Utility.personNameGenerator.GenerateRandomLastName();
             string encryptedPassword = encryptionService.Encrypt(password);
             retValue.passwordHash = encryptedPassword;
             var emailAndUserName = Utility.generateHelmEmail();
             retValue.username = emailAndUserName.Item2;
+            retValue.email = emailAndUserName.Item1;
             retValue.credentialService_DB = credentialService;
             return retValue;
 
