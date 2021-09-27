@@ -1,4 +1,7 @@
-﻿using MailKit;
+﻿using HeladacWeb.Data;
+using HeladacWeb.Models;
+using MailKit;
+using Microsoft.EntityFrameworkCore;
 using RandomNameGeneratorLibrary;
 using System;
 using System.Collections.Generic;
@@ -13,6 +16,8 @@ namespace HeladacWeb
         public const int defaultPageSize = 20;
         public const int defaultPageIndex = 0;
         public static readonly PersonNameGenerator personNameGenerator = new PersonNameGenerator();
+        public readonly static DateTimeOffset BeginningOfTime = new DateTimeOffset();
+        static public DateTimeOffset _lastTimePhoneNumberList = new DateTimeOffset();
         /// <summary>
         /// Function takes a string and checks if the string is a valid email
         /// </summary>
@@ -54,7 +59,10 @@ namespace HeladacWeb
             return retValue;
         }
 
-
+        public static DateTimeOffset getLastTimePhoneNumberList()
+        {
+            return _lastTimePhoneNumberList;
+        }
         public static bool isNot_NullEmptyOrWhiteSpace(this string input)
         {
             bool retValue = !(string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input));
@@ -106,6 +114,11 @@ namespace HeladacWeb
             return retValue;
         }
 
+        public static bool isBeginningOfTime(this DateTimeOffset time)
+        {
+            return time == BeginningOfTime;
+        }
+
         public static string generateHelmPassword()
         {
             string retValue = RandomString(seedString: passwordChars);
@@ -148,6 +161,50 @@ namespace HeladacWeb
 
             Tuple<bool, bool, string, string> retValue = new Tuple<bool, bool, string, string>(isValidEmail, isHeladacEmail, usernameString, domainString);
             return retValue;
+        }
+
+        public static List<PhoneNumber> jayNumbers = new List<PhoneNumber>()
+        {
+            new PhoneNumber()
+            {
+              fullNumber= "+18059549725",
+              isGeneral = true
+            
+            },
+            new PhoneNumber()
+            {
+                fullNumber="+13478500836" //Jay numbers.
+            }
+
+        };
+
+        public static List<PhoneNumber> _allPhoneNumbers = new List<PhoneNumber>() { 
+        };
+
+        async static public Task updateCachedPhoneNumbers(HeladacDbContext context)
+        {
+            var phoneNumbers =  await context.PhoneNumbers.Where(phoneNumber => phoneNumber.isGeneral).ToListAsync().ConfigureAwait(false);
+            _allPhoneNumbers = phoneNumbers.ToList();
+            _lastTimePhoneNumberList = DateTimeOffset.UtcNow;
+        }
+
+        public static T RandomEntry<T>(this IEnumerable<T> iterable) {
+            int elementCount = iterable.Count();
+            if (elementCount > 0)
+            {
+                if(elementCount == 1)
+                {
+                    return iterable.First();
+                }
+                int index = random.Next(0, elementCount);
+                if (iterable is (IList<T>) )
+                {
+                    IList<T> listIter = (IList<T>)iterable;
+                    return listIter[index];
+                }
+                return iterable.Take(index + 1).Last();
+            }
+            throw new ArgumentException("Cannot get a random value from an empty collection");
         }
     }
 }

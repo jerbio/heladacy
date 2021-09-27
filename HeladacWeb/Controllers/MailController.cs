@@ -72,7 +72,7 @@ namespace HeladacWeb.Controllers
                         };
                         context.Emails.Add(email);
                         context.EmailLogEntrys.Add(emailLogEntry);
-                        await context.SaveChangesAsync().ConfigureAwait(false);
+                        await persistDbChanges().ConfigureAwait(false);
                     }
                 }
             }

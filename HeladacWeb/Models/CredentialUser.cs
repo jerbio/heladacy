@@ -15,6 +15,8 @@ namespace HeladacWeb.Models
         public virtual string username { get; set; }
         public virtual string passwordHash { get; set; }
         public virtual string email { get; set; }
-        public virtual string phoneNumber { get; set; }
+        public virtual string phoneNumberId { get; set; }
+        [ForeignKey("phoneNumberId")]
+        public virtual PhoneNumber phoneNumber { get; set; }
     }
 }

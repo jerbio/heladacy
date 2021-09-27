@@ -20,6 +20,8 @@ namespace HeladacWeb.Data
         public virtual DbSet<HelmUser> HelmUsers { get; set; }
         public virtual DbSet<SentMail> SentMails { get; set; }
         public virtual DbSet<CredentialService> CredentialServices { get; set; }
+        public virtual DbSet<PhoneNumber> PhoneNumbers { get; set; }
+        public virtual DbSet<PhoneNumberList> PhoneNumberList { get; set; }
 
         public HeladacDbContext(
             DbContextOptions options,
@@ -73,6 +75,16 @@ namespace HeladacWeb.Data
             modelBuilder.Entity<CredentialService>()
                 .HasIndex(credentialService => new { credentialService.Domain_DB })
                 .HasName("CredentialService_Domain")
+                .IsUnique();
+
+            modelBuilder.Entity<CredentialService>()
+                .HasIndex(credentialService => new { credentialService.Domain_DB })
+                .HasName("CredentialService_Domain")
+                .IsUnique();
+
+            modelBuilder.Entity<PhoneNumber>()
+                .HasIndex(phoneNumber => new { phoneNumber.fullNumber})
+                .HasName("PhoneNumber")
                 .IsUnique();
 
         }

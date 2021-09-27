@@ -13,5 +13,9 @@ namespace HeladacWeb.Controllers
     public class HeladacBaseController : ControllerBase
     {
         protected HeladacDbContext context = new HeladacDBContextFactory().CreateDbContext(new string[0]);
+        protected Task persistDbChanges()
+        {
+            return context.SaveChangesAsync();
+        }
     }
 }

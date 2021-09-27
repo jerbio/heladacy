@@ -149,23 +149,5 @@ namespace HeladacWeb.Models
         public string state_DB { get; set; }
         public string country_DB { get; set; }
         public string postal_DB { get; set; }
-        
-
-        public static HelmUser generateHelmUser(HeladacUser heladcUser, CredentialService credentialService)
-        {
-            HelmUser retValue = new HelmUser();
-            retValue.heladacUser_db = heladcUser;
-            string password = Utility.generateHelmPassword();
-            retValue.firstName = Utility.personNameGenerator.GenerateRandomFirstName();
-            retValue.lastName = Utility.personNameGenerator.GenerateRandomLastName();
-            string encryptedPassword = encryptionService.Encrypt(password);
-            retValue.passwordHash = encryptedPassword;
-            var emailAndUserName = Utility.generateHelmEmail();
-            retValue.username = emailAndUserName.Item2;
-            retValue.email = emailAndUserName.Item1;
-            retValue.credentialService_DB = credentialService;
-            return retValue;
-
-        }
     }
 }
