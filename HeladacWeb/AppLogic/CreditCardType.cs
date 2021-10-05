@@ -1,0 +1,1 @@
+public enum CreditCardType {amex, diners, discover, enroute, jcb15, jcb16, mastercard, visa, voyager};

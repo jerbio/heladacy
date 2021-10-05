@@ -24,6 +24,7 @@
     </PackageReference>
     <PackageReference Include="MimeKit" Version="2.10.1" />
     <PackageReference Include="RandomNameGeneratorLibrary" Version="1.2.2" />
+    <PackageReference Include="System.Collections.Immutable" Version="5.0.0" />
     <PackageReference Include="Twilio" Version="5.64.0" />
   </ItemGroup>
 
