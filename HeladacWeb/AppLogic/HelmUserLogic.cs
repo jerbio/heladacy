@@ -38,8 +38,8 @@ namespace HeladacWeb.AppLogic
                 PhoneNumberLogic phoneNumberLogic = new (context);
                 phoneNumberLogic.persistAfterChanges = false;
                 PhoneNumber phoneNumber = await phoneNumberLogic.generatePhoneNumber(heladacUser).ConfigureAwait(false);
-                //heladacUser.latestPhoneNumber = phoneNumber;
-                //retValue.phoneNumber = phoneNumber;
+                heladacUser.latestPhoneNumber = phoneNumber;
+                retValue.phoneNumber = phoneNumber;
             }
 
             context.HelmUsers.Add(retValue);

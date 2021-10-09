@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Twilio;
 using HeladacWeb.Data;
+using HeladacWeb.ThirdpartyCredentialGenerator;
 
 namespace HeladacWeb.AppLogic
 {
@@ -63,7 +64,9 @@ namespace HeladacWeb.AppLogic
 
         public PhoneNumber getRemotePhoneNumber()
         {
-            PhoneNumber retValue = getGenerallyAllocationPhoneNumber();
+            new TwilioFactory().initializeTwilioClient();
+            PhoneNumberHandler phoneNumberHandler = new PhoneNumberHandler();
+            PhoneNumber retValue = phoneNumberHandler.purchaseNumber();
             return retValue;
         }
 

@@ -1,0 +1,12 @@
+{
+  "name": "heladac-phone-client",
+  "version": "0.0.0",
+  "description": "HeladacPhoneClient",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  },
+  "dependencies": {
+    "twilio": "^3.68.0"
+  }
+}

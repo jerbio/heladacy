@@ -87,6 +87,11 @@ namespace HeladacWeb.Data
                 .HasName("PhoneNumber")
                 .IsUnique();
 
+            modelBuilder.Entity<PhoneMessage>()
+                .HasIndex(phoneMessage => new { phoneMessage.thirdPartyId })
+                .HasName("PhoneNumber")
+                .IsUnique();
+
         }
     }
 }
