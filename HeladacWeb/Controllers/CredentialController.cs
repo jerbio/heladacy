@@ -79,7 +79,7 @@ namespace HeladacWeb.Controllers
             HelmUser retValue = credentialServices.Join(context.HelmUsers,
                 eachCredentialService => eachCredentialService.id,
                 eachHelmUser => eachHelmUser.credentialServiceId,
-                (eachCredentialService, eachHelmUser) => eachHelmUser).OrderByDescending(eachHelmUser => eachHelmUser.creationTimeMs_DB).Include(helmUser => helmUser.phoneNumber).FirstOrDefault();
+                (eachCredentialService, eachHelmUser) => eachHelmUser).OrderByDescending(eachHelmUser => eachHelmUser.creationTimeMs_DB).Include(helmUser => helmUser.phoneNumber).Include(helmUser => helmUser.creditCard_DB).FirstOrDefault();
             
             
             if(retValue!=null)

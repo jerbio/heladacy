@@ -28,7 +28,12 @@ namespace HeladacWeb.AppLogic
             retValue.username = emailAndUserName.Item2;
             retValue.email = emailAndUserName.Item1;
             retValue.credentialService_DB = credentialService;
-            if(heladacUser.latestPhoneNumber!=null)
+            CreditCard creditCard = new CreditCard(retValue);
+            creditCard.autoPopulateCredentials(heladacUser);
+            creditCard.heladacUser_db = heladacUser;
+            retValue.creditCard_DB = creditCard;
+            
+            if (heladacUser.latestPhoneNumber!=null)
             {
                 retValue.phoneNumber = heladacUser.latestPhoneNumber;
             }

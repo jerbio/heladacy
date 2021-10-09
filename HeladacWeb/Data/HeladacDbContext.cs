@@ -87,6 +87,11 @@ namespace HeladacWeb.Data
                 .HasName("PhoneNumber")
                 .IsUnique();
 
+            modelBuilder.Entity<CreditCard>()
+                .HasIndex(creditCard => new { creditCard.heladacUserId, creditCard.ccNumber })
+                .HasName("HeladacUser_CreditCardNumber")
+                .IsUnique();
+
         }
     }
 }

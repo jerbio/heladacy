@@ -82,7 +82,7 @@ namespace HeladacWeb
             return (T)Enum.Parse(typeof(T), value, true);
         }
 
-        private static Random random = new Random();
+        public static readonly Random random = new Random();
         public static string RandomString(int length = -1, string seedString=null)
         {
             if (length == -1)
@@ -128,7 +128,7 @@ namespace HeladacWeb
 
         private static readonly string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         private static readonly string passwordChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_)(*&^%$#@!{}:\" <>?,./;\'[]";
-        private static HashSet<string> _helmDomains = new HashSet<string>( new string[] { "heladackid.com", "heladac.com" });
+        private static ImmutableHashSet<string> _helmDomains = ImmutableHashSet.Create<string>( "heladackid.com", "heladac.com");
 
         public static string [] helmDomains { 
             get 
@@ -207,82 +207,5 @@ namespace HeladacWeb
             }
             throw new ArgumentException("Cannot get a random value from an empty collection");
         }
-
-
-        public static readonly ImmutableList<CreditCardConfig> creditCardConfigs = ImmutableList.Create<CreditCardConfig>(
-        
-            new CreditCardConfig()
-            {
-                creditCardType =CreditCardType.amex,
-                digitCount = 15,
-                prefixes = new List<string> () { "34", "37" }
-            },
-            new CreditCardConfig()
-            {
-                creditCardType = CreditCardType.diners,
-                digitCount = 15,
-                prefixes = new List<string>() { "300","301","302","303","36","38" }
-            },
-            new CreditCardConfig()
-            {
-                creditCardType = CreditCardType.discover,
-                digitCount = 16,
-                prefixes = new List<string>() { "6011" }
-            },
-            new CreditCardConfig()
-            {
-                creditCardType = CreditCardType.enroute,
-                digitCount = 16,
-                prefixes = new List<string>() { "2014", "2149" }
-            },
-            new CreditCardConfig()
-            {
-                creditCardType = CreditCardType.jcb15,
-                digitCount = 16,
-                prefixes = new List<string>() { "2100", "1800" }
-            },
-            new CreditCardConfig()
-            {
-                creditCardType = CreditCardType.jcb16,
-                digitCount = 16,
-                prefixes = new List<string>() { "3088","3096","3112", "3158", "3337", "3528" }
-            },
-            new CreditCardConfig()
-            {
-                creditCardType = CreditCardType.mastercard,
-                digitCount = 16,
-                prefixes = new List<string>() { "51", "52", "53","54","55" }
-            },
-            new CreditCardConfig()
-            {
-                creditCardType = CreditCardType.mastercard,
-                digitCount = 16,
-                prefixes = new List<string>() { "51", "52", "53", "54", "55" }
-            },
-            new CreditCardConfig()
-            {
-                creditCardType = CreditCardType.visa,
-                digitCount = 13,
-                prefixes = new List<string>() { "4539", "4556", "4916", "4532", "4929", "40240071", "4485", "4716", "4" }
-            },
-            new CreditCardConfig()
-            {
-                creditCardType = CreditCardType.visa,
-                digitCount = 16,
-                prefixes = new List<string>() { "4539", "4556", "4916", "4532", "4929", "40240071", "4485", "4716", "4" }
-            },
-            new CreditCardConfig()
-            {
-                creditCardType = CreditCardType.voyager,
-                digitCount = 13,
-                prefixes = new List<string>() { "8699" }
-            },
-            new CreditCardConfig()
-            {
-                creditCardType = CreditCardType.voyager,
-                digitCount = 16,
-                prefixes = new List<string>() { "8699" }
-            }
-        );
     }
 }

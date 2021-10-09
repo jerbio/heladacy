@@ -19,6 +19,8 @@ namespace HeladacWeb.Models
             { CredentialServiceType.netflix, TimeSpan.FromDays(30) },
             { CredentialServiceType.none, TimeSpan.FromDays(-1) }
         };
+        protected string _id = Guid.NewGuid().ToString();
+        protected HeladacUser _heladacUser;
         [NotMapped]
         private DateTimeOffset _creationTime { get; set; } = DateTimeOffset.UtcNow;
 
@@ -121,7 +123,6 @@ namespace HeladacWeb.Models
                 return encryptionService.Decrypt(this.passwordHash);
             } 
         }
-        protected string _id = Guid.NewGuid().ToString();
         [Key]
         public string id
         {
@@ -134,15 +135,21 @@ namespace HeladacWeb.Models
                 _id = value;
             }
         }
-        public HeladacUser heladacUser { get; }
+        public HeladacUser heladacUser
+        {
+            get { return _heladacUser; }
+        }
         [Required]
         public string heladacUserId { get; set; }
         [ForeignKey("heladacUserId")]
-        public HeladacUser heladacUser_db { get; set; }
+        public HeladacUser heladacUser_db { get { return _heladacUser; } set { _heladacUser = value; } }
         public string credentialServiceId { get; set; }
         [ForeignKey("credentialServiceId")]
         public CredentialService credentialService_DB { get; set; }
 
+        public string creditCardId { get; set; }
+        [ForeignKey("creditCardId")]
+        public CreditCard creditCard_DB { get; set; }
         public string address1_DB { get; set; }
         public string address2_DB { get; set; }
         public string city_DB { get; set; }

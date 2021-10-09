@@ -27,6 +27,9 @@ namespace HeladacWeb.Models
         public bool isActive { get; set; }
         public bool isGeneral { get; set; } = false;
         public bool isVerifiedActive { get; set; }
+        public string phoneNumber { get; set; }
+        public string countryCode { get; set; }
+        public string extension { get; set; }
         public string fullNumber { get; set; }
     }
 }
