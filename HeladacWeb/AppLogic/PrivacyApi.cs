@@ -9,7 +9,8 @@ namespace HeladacWeb.AppLogic
     public class PrivacyApi
     {
         const string baseUrl = "https://api.lithic.com";
-        const string apiKey = "";
+        string apiKey = Utility.configuration["Lithic:"+ (Utility.isDevMode ? "sandbox" : "prod") + ":apiKey"];
+
         RestClient client;
         public PrivacyApi()
         {
