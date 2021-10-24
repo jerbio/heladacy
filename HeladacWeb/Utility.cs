@@ -2,10 +2,12 @@
 using HeladacWeb.Models;
 using MailKit;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using RandomNameGeneratorLibrary;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -19,6 +21,9 @@ namespace HeladacWeb
         public static readonly PersonNameGenerator personNameGenerator = new PersonNameGenerator();
         public readonly static DateTimeOffset BeginningOfTime = new DateTimeOffset();
         static public DateTimeOffset _lastTimePhoneNumberList = new DateTimeOffset();
+        public static readonly IConfiguration configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json").Build();
         /// <summary>
         /// Function takes a string and checks if the string is a valid email
         /// </summary>

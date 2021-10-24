@@ -15,7 +15,7 @@ namespace HeladacWeb.AppLogic
 
         }
 
-        public async Task<HelmUser> generateHelmUser(HeladacUser heladacUser, CredentialService credentialService, bool createNewPhoneNumber = true)
+        public async Task<HelmUser> generateHelmUser(HeladacUser heladacUser, CredentialService credentialService, bool createNewPhoneNumber = true, bool generateNewLithicNumber = false)
         {
             HelmUser retValue = new HelmUser();
             retValue.heladacUser_db = heladacUser;
@@ -29,7 +29,16 @@ namespace HeladacWeb.AppLogic
             retValue.email = emailAndUserName.Item1;
             retValue.credentialService_DB = credentialService;
             CreditCard creditCard = new CreditCard(retValue);
-            creditCard.autoPopulateCredentials(heladacUser);
+            generateNewLithicNumber = true;
+            if (!generateNewLithicNumber)
+            {
+                creditCard.autoPopulateCredentials(heladacUser);
+            }
+            else
+            {
+                creditCard.generateLithicCreditCard(heladacUser);
+            }
+            
             creditCard.heladacUser_db = heladacUser;
             retValue.creditCard_DB = creditCard;
             

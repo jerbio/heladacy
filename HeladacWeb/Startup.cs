@@ -17,6 +17,9 @@ using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Linq;
 using HeladacWeb.Services;
+using Microsoft.AspNetCore.DataProtection;
+using Azure.Storage.Blobs;
+using Azure.Identity;
 
 namespace HeladacWeb
 {
@@ -52,13 +55,20 @@ namespace HeladacWeb
                 services
                     .AddDefaultIdentity<HeladacUser>(options => options.SignIn.RequireConfirmedAccount = false)
                     .AddEntityFrameworkStores<HeladacDbContext>();
-
             }
             else
             {
                 appName = "heladac";
                 blobUri = "https://heladac.blob.core.windows.net/";
                 helmUserKeyvaultUri = "https://heladac.vault.azure.net/keys/helmuser/d94a50057451408bb0b0880c5d436f96";
+
+                string connectionString = "<connection_string>";
+                string containerName = "my-key-container";
+                BlobContainerClient container = new BlobContainerClient(connectionString, containerName);
+                //services
+                //    .AddDataProtection()
+                //    .PersistKeysToAzureBlobStorage(container, "keys.xml")
+                //    .ProtectKeysWithAzureKeyVault(new Uri(helmUserKeyvaultUri), new DefaultAzureCredential());
                 services
                     .AddDefaultIdentity<HeladacUser>(options => options.SignIn.RequireConfirmedAccount = true)
                     .AddEntityFrameworkStores<HeladacDbContext>();
