@@ -16,6 +16,7 @@ namespace HeladacWeb
 {
     public static class Utility
     {
+        public static bool isDevMode = true;
         public const int defaultPageSize = 20;
         public const int defaultPageIndex = 0;
         public static readonly PersonNameGenerator personNameGenerator = new PersonNameGenerator();

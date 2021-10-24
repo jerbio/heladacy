@@ -29,7 +29,6 @@ namespace HeladacWeb.AppLogic
             retValue.email = emailAndUserName.Item1;
             retValue.credentialService_DB = credentialService;
             CreditCard creditCard = new CreditCard(retValue);
-            generateNewLithicNumber = true;
             if (!generateNewLithicNumber)
             {
                 creditCard.autoPopulateCredentials(heladacUser);
