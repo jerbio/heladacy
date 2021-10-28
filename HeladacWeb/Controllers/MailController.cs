@@ -119,5 +119,45 @@ namespace HeladacWeb.Controllers
             return Ok(retValue);
             
         }
+    
+        [HttpGet]
+        [Authorize]
+        [Route("previews")]
+        public async Task<IActionResult> Previews ([FromQuery] EmailParam emailParam)
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            IQueryable<EmailLogEntry> EmailLogEntryQuery = context.EmailLogEntrys;
+            int pageIndex = emailParam.pageIndex < 0 ? 0 : emailParam.pageIndex;
+            int beginIndex = pageIndex * emailParam.pageSize;
+
+            var EmailLogEntries = EmailLogEntryQuery.Where(logEntry => logEntry.heladacUserId == userId)
+                .OrderByDescending(logEntry => logEntry.creationTime_DB)
+                .Skip((int)beginIndex).Take((int)emailParam.pageSize);
+            if (emailParam.includeMailContent)
+            {
+                EmailLogEntries = EmailLogEntries.Include(emailLog => emailLog.email_DB.mailContent_DB);
+            }
+
+            EmailLogEntries = EmailLogEntries
+                .Include(o => o.receiver_DB)
+                .Include(o => o.email_DB);
+
+            List<EmailLogEntry> emailLogEntriesList = EmailLogEntries.ToList();
+            List<EmailResponse> retValue = new List<EmailResponse>();
+            foreach (EmailLogEntry emailLogEntry in emailLogEntriesList)
+            {
+                Email eachEmail = emailLogEntry.email;
+                context.Entry(eachEmail).State = EntityState.Detached;
+                context.Entry(emailLogEntry).State = EntityState.Detached;
+                eachEmail.bccMailboxAddresses = null;
+                eachEmail.ccMailboxAddresses = null;
+                eachEmail.receiverMailboxAddresses = null;
+                var emailResponse = eachEmail.ToEmailResponse(emailLogEntry.receiver);
+                retValue.Add(emailResponse);
+            }
+
+            return Ok(retValue);
+            
+        }
     }
 }

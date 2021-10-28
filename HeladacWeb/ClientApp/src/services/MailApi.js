@@ -1,4 +1,6 @@
-import {Api} from './Api'
+//React components
+import React, { Component } from 'react';
+import { Api } from './Api'
 import axios from 'axios'
 
 export default class MailApi extends Api {
@@ -27,6 +29,18 @@ export default class MailApi extends Api {
 
     async getMails(mailArgs) {
         let url = this.url + 'usermails'
+        let header = await this.getHeader()
+        console.log(header)
+        let response = fetch(url,{
+            headers: header
+        })
+        return response.then((response) => {
+            return response.json()
+        })
+    }
+
+    async getPreviews(mailArgs) {
+        let url = this.url + 'previews'
         let header = await this.getHeader()
         console.log(header)
         let response = fetch(url,{
