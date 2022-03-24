@@ -38,6 +38,10 @@ namespace HeladacWeb.Data
                 .IsUnique();
 
             modelBuilder.Entity<EmailLogEntry>()
+                .HasIndex(emailEntry => new { emailEntry.heladacUserId, emailEntry.creationTime_DB, emailEntry.id })
+                .IsUnique();
+
+            modelBuilder.Entity<EmailLogEntry>()
                 .HasKey(emailEntry => new { emailEntry.id })
                 .IsClustered(false);
 

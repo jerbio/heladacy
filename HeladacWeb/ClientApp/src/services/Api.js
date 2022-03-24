@@ -6,7 +6,6 @@ export class Api {
     }
 
     async getHeader() {
-        //let tempToken = await authService.getAccessToken();
         let token = await authService.getAccessToken();
         let retValue = !token ? {} : { 'Authorization': `Bearer ${token}` }
         return retValue

@@ -4,6 +4,10 @@ let Constants = {
         loading: 'LOADING',
         finished: 'FINISHED',
         error: 'ERROR'
+    },
+    pageParams: {
+        pageIndex: 0,
+        pageSize: 20
     }
 }
 

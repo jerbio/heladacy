@@ -36,6 +36,7 @@ namespace HeladacWeb
                 sender = email.sender_DB,
                 emailId = email.emailId_DB,
                 subject = email.subJect_DB,
+                time = email.timeOfCreationMs,
                 receiver = new MailBoxAddressResponse() { 
                     address = user.email,
                     name = user.fullName

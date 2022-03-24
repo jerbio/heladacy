@@ -44,6 +44,13 @@ namespace HeladacWeb.Models
             }
         }
 
+        public bool isRead
+        {
+            get
+            {
+                return this.isRead_DB;
+            }
+        }
 
         #region dbEntries
         public string _id = Guid.NewGuid().ToString();

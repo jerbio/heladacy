@@ -15,6 +15,7 @@ namespace HeladacWeb.Models
     public class Email
     {
         protected string _id = Guid.NewGuid().ToString();
+
         public string id {
             get {
                 return _id;
@@ -23,7 +24,51 @@ namespace HeladacWeb.Models
                 _id = value;
             }
         }
+        [NotMapped]
+        protected virtual List<MailboxAddress> _cc { get; set; } = null;
+        public string sender
+        {
+            get
+            {
+                return this.sender_DB;
+            }
+        }
 
+        [NotMapped]
+        public List<MailboxAddress> ccMailboxAddresses
+        {
+            get
+            {
+                return (_cc ?? (_cc = new List<MailboxAddress>()));
+            }
+            set
+            {
+                _cc = value;
+            }
+        }
+        [NotMapped]
+        protected virtual List<MailboxAddress> _receiver { get; set; } = null;
+        [NotMapped]
+        public List<MailboxAddress> receiverMailboxAddresses
+        {
+            get
+            {
+                return (_receiver ?? (_receiver = new List<MailboxAddress>()));
+            }
+            set
+            {
+                _receiver = value;
+            }
+        }
+        [NotMapped]
+        public virtual string receiver
+        {
+            get
+            {
+                return receiver_DB;
+            }
+        }
+        #region dbEntries
         public string emailId_DB { get; set; }
         public string subJect_DB { get; set; }
         public DateTimeOffset timeOfCreation {
@@ -77,20 +122,6 @@ namespace HeladacWeb.Models
                 }
             }
         }
-        [NotMapped]
-        protected virtual List<MailboxAddress> _cc { get; set; } = null;
-        [NotMapped]
-        public List<MailboxAddress> ccMailboxAddresses
-        {
-            get
-            {
-                return (_cc ?? (_cc = new List<MailboxAddress>()));
-            }
-            set
-            {
-                _cc = value;
-            }
-        }
         [Required]
         public virtual string cc_DB
         {
@@ -114,27 +145,6 @@ namespace HeladacWeb.Models
                     var MailboxAddress = JsonConvert.DeserializeObject<MailboxAddress>(MailboxAddressJson.ToString());
                     ccs.Add(MailboxAddress);
                 }
-            }
-        }
-        [NotMapped]
-        protected virtual List<MailboxAddress> _receiver { get; set; } = null;
-        [NotMapped]
-        public List<MailboxAddress> receiverMailboxAddresses {
-            get
-            {
-                return (_receiver ?? (_receiver = new List<MailboxAddress>()));
-            }
-            set
-            {
-                _receiver = value;
-            }
-        }
-        [NotMapped]
-        public virtual string receiver
-        {
-            get
-            {
-                return receiver_DB;
             }
         }
 
@@ -180,5 +190,6 @@ namespace HeladacWeb.Models
         {
             get;set;
         }
+        #endregion
     }
 }

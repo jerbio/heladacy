@@ -1,5 +1,3 @@
-//React components
-import React, { Component } from 'react';
 import { Api } from './Api'
 import axios from 'axios'
 
@@ -10,16 +8,22 @@ export default class MailApi extends Api {
         this.url = url
     }
 
-    getMail(mailArgs) {
+    async getMail(mailArgs) {
         let params = mailArgs
         let {id} = params
-        let url = this.url
+        let url = this.url.substr(0,this.url.length - 1);
         if (id) {
-            return axios.get(url, {
-                params
-              }).then((response) => {
-                  return response.data
-              })
+            url = new URL(url);
+            Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+            let header = await this.getHeader();
+            
+            console.log(header)
+            let response = fetch(url,{
+                headers: header
+            })
+            return response.then((response) => {
+                return response.json()
+            })
         } else {
             return Promise.reject(() => {
                 return {error: 'id missing'}
@@ -40,8 +44,13 @@ export default class MailApi extends Api {
     }
 
     async getPreviews(mailArgs) {
-        let url = this.url + 'previews'
-        let header = await this.getHeader()
+        let url = new URL(this.url + 'previews');
+        let pageIndex = mailArgs.pageIndex ? mailArgs.pageIndex : 0;
+        let pageSize = mailArgs.pageSize;
+        let params = {pageIndex, pageSize};
+        Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+        let header = await this.getHeader();
+        
         console.log(header)
         let response = fetch(url,{
             headers: header

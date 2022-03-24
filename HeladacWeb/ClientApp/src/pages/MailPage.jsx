@@ -1,8 +1,8 @@
 ﻿//React components
-import React, { Component } from 'react';
+import React, { Component, createContext  } from 'react';
 
 //App Components
-import { MailPreview } from '../components/MailPreview'
+import { MailPreviews } from '../components/MailPreviews'
 import { MailContent } from '../components/MailContent'
 
 //Api and services
@@ -10,6 +10,11 @@ import Constants from '../Constants'
 
 
 import MailApi from '../services/MailApi'
+
+export const ActiveMail = createContext({
+    mailId: null,
+    setMailId: () => {},
+});
 
 export class MailPage extends Component {
     constructor(props) {
@@ -26,23 +31,43 @@ export class MailPage extends Component {
             dataLoad: {
                 status: Constants.loadStatus.notInitialized,
                 data: {}
+            },
+            activeMail: {
+                mailId: null,
+                setMailId: (val) => {
+                    this.setState({
+                        activeMail: 
+                        {...this.state.activeMail,
+                            mailId: val
+                        }
+                    })
+
+                },
             }
+
         };
+    }
+    
+    getMailContent() {
+        if(this.state.activeMail.mailId) {
+            return (<MailContent></MailContent>);
+        }
+
+        return null
     }
 
     render() {
-
+        let mailContent = this.getMailContent();
         return (
+        <ActiveMail.Provider value={this.state.activeMail}>
           <div>
             <h1>Mail</h1>
             <div>
-                <MailPreview></MailPreview>
+                <MailPreviews></MailPreviews>
             </div>
-            <div>
-                <MailContent></MailContent>
-            </div>
-            <h1>Heladac Mail is here</h1>
+            <div> {mailContent} </div>
           </div>
+        </ActiveMail.Provider>
         );
     }
 }
