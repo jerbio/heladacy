@@ -20,6 +20,7 @@ using HeladacWeb.Services;
 using Microsoft.AspNetCore.DataProtection;
 using Azure.Storage.Blobs;
 using Azure.Identity;
+using System.Threading.Tasks;
 
 namespace HeladacWeb
 {
@@ -107,6 +108,13 @@ namespace HeladacWeb
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            //HeladacDBContextFactory.
+
+            if (Utility.getLastTimePhoneNumberList().isBeginningOfTime())
+            {
+                Task.Run(async () => { await Utility.updateCachedPhoneNumbers(new HeladacDBContextFactory().CreateDbContext(new string[0])).ConfigureAwait(false); });
+            }
         }
 
 
