@@ -81,9 +81,7 @@ namespace HeladacWeb
 
             services.AddDbContext<HeladacDbContext>(options =>
                 options.UseSqlServer(
-                    //Configuration.GetConnectionString("DefaultConnection")
-                    //Configuration.GetConnectionString("LocalConnection")
-                    Configuration.GetConnectionString("RemoteConnection")
+                    Configuration.GetConnectionString(Configuration["ConnectionName"])
                     ));
 
 
