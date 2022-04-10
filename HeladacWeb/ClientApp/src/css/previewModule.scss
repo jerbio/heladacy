@@ -1,0 +1,41 @@
+.preview-container {
+    margin: 0 5px 0 5px;
+    background-color: yellow;
+}
+
+.preview-sender {
+    margin: 0 5px 0 5px;
+}
+
+.preview-subject {
+    margin: 0 5px 0 5px;
+    background-color: green;
+}
+
+.preview-top-row {
+    height: 50px;
+    display: flex;
+    background-color: blue;
+}
+
+.preview-text {
+    height: 50px;
+    background-color: red;
+}
+
+.preview-image {
+    width: 50px;
+    height: 50px;
+    background: yellow;
+}
+
+.preview-time {
+    width: 100%;
+    position: relative;
+}
+
+.preview-time time {
+    margin: 0 5px 0 5px;
+    position: absolute;
+    right: 0;
+}

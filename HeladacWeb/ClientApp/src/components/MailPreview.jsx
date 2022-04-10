@@ -2,7 +2,7 @@ import React, { Component, useEffect, useContext } from "react";
 
 import {ActiveMail} from "../pages/MailPage"
 import Moment from 'react-moment';
-import styles from '../css/preview.module.css'; 
+import '../css/previewModule.scss';
 
 function generateUserImage(preview) {
 
@@ -27,7 +27,8 @@ function MailPreview(props) {
                         <div className={'preview-sender'}>{preview.sender}</div>
                         <div className={'preview-subject'}>{preview.subject}</div>
                     </div>
-                    <div className={'preview-time'}><Moment unix>{(preview.time/1000)}</Moment></div>
+                <div className={'preview-time'}>
+                    <Moment fromNow>{(preview.time)}</Moment></div>
                 </div>
                 <div className={'preview-text'}>{previewText}</div>
             </div>
