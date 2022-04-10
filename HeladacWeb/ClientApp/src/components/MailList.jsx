@@ -55,8 +55,8 @@ export class MailList extends Component {
     generateCredential() {
         debugger
         let credArgs = {
-            url: 'netflix.com',
-            domain: 'netflix.com'
+            url: 'https://www.localhostheladackid.com',
+            domain: 'localhostheladackid.com'
         }
         this.state.api.credential.createCredential(credArgs).then((response) => {
 
