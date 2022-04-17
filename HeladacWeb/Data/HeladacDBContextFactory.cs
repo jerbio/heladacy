@@ -18,8 +18,7 @@ namespace HeladacWeb.Data
             .AddJsonFile("appsettings.json").Build();
 
             var builder = new DbContextOptionsBuilder<HeladacDbContext>();
-            var connectionString =
-                configuration.GetConnectionString("DefaultConnection");
+            var connectionString = configuration.GetConnectionString(configuration["ConnectionName"]);
             builder.UseSqlServer(connectionString);
 
             return new HeladacDbContext(builder.Options, new OperationalStoreOptionsMigrations());
