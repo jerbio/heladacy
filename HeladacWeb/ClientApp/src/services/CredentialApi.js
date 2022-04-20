@@ -24,7 +24,6 @@ export default class CredentialApi extends Api {
 
         let header = await this.getHeader()
         header['Content-Type'] = 'application/json'
-        debugger
         return fetch(url,
             {
                 method: 'POST',

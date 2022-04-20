@@ -34,11 +34,16 @@ export function MailContent () {
 
     let retValue = null;
     if(mailData) {
-        retValue = (<div>
-            <div>{mailData.sender}
+        retValue = (<div className='mail-content-container'>
+            <div className='mail-sender-receiver-container'>
+                <span>{'From: '}</span><span className='email-text' >{mailData.senderName || mailData.sender}</span> <span>{' to '}</span> <span className='email-text'>{mailData.receiver.address}</span>
             </div>
-            <div>{mailData.receiver.address}</div>
-            <div>{mailData.subject}</div>
+            <div className='mail-subject-container'>
+                <span>{mailData.subject}</span>
+            </div>
+            <div className='mail-content-body-wrapper'>
+                <span>{mailData.mailContentResponse.body}</span>
+            </div>
         </div>);
     }
 

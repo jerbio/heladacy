@@ -1,0 +1,35 @@
+.mail-page-wrapper {
+    display: flex;
+    background-color: rgb(245, 245, 250);
+}
+
+.preview-list-wrapper {
+    flex: 1;
+}
+
+.preview-list-wrapper.mail-selected {
+    flex: initial;
+}
+
+.mail-content-container {
+    padding: 50px;
+    background-color: white;
+    box-shadow: -5px 0 5px rgb(200 200 200);
+}
+
+.mail-sender-receiver-container {
+    margin-bottom: 10px;
+}
+
+span.email-text {
+    font-weight: 600;
+}
+
+.mail-subject-container {
+    margin-bottom: 25px;
+}
+
+.mail-subject-container span {
+    font-size: 30px;
+}
+

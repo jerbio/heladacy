@@ -88,6 +88,7 @@ namespace HeladacWeb.Controllers
             List<EmailLogEntry> emailLogEntrys = context.EmailLogEntrys
                 .Include(emailLogEntry => emailLogEntry.email_DB)
                 .Include(emailLogEntry => emailLogEntry.receiver_DB)
+                .Include(emailLogEntry => emailLogEntry.email_DB.mailContent_DB)
                 .Where(emailLogEntrys => emailLogEntrys.email_DB.id == emailParam.id).ToList();
             EmailLogEntry emailLogEntry = emailLogEntrys.FirstOrDefault();
             if(emailLogEntry != null)

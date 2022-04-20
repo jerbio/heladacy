@@ -80,7 +80,6 @@ export class AuthorizeService {
     }
 
     async completeSignIn(url) {
-        debugger
         try {
             await this.ensureUserManagerInitialized();
             const user = await this.userManager.signinCallback(url);

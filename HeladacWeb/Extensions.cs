@@ -34,6 +34,7 @@ namespace HeladacWeb
                 cc = email.ccMailboxAddresses?.Select(mailAddress => mailAddress.ToMailAddressBoxResponse()).ToList(),
                 to = email.receiverMailboxAddresses?.Select(mailAddress => mailAddress.ToMailAddressBoxResponse()).ToList(),
                 sender = email.sender_DB,
+                senderName = email.sender_Name_DB,
                 emailId = email.emailId_DB,
                 subject = email.subJect_DB,
                 time = email.timeOfCreationMs,
@@ -42,7 +43,7 @@ namespace HeladacWeb
                     name = user.fullName
                 },
                 
-                mailContentResponse = email.mailContent_DB?.ToMailContentResponse()
+                mailContentResponse = email.mailContent?.ToMailContentResponse()
             };
             return retValue;
         }

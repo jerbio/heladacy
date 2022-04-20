@@ -184,6 +184,9 @@ namespace HeladacWeb.Models
                 }
             }
         }
+        public MailContent mailContent { 
+            get { return mailContent_DB; }
+        }
         public virtual string mailContentId {get;set;}
         [ForeignKey("mailContentId")]
         public MailContent mailContent_DB

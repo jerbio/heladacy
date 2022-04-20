@@ -10,6 +10,7 @@ namespace HeladacWeb.Models.Responses
         public string id { get; set; }
         public string emailId { get; set; }
         public string sender { get; set; } = null;
+        public string senderName { get; set; } = null;
         public long time { get; set; } = 0;
         public MailBoxAddressResponse receiver { get; set; } = null;
         public List<MailBoxAddressResponse> bcc { get; set; } = null;

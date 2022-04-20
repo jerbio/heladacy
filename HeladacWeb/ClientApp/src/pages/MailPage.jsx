@@ -11,6 +11,8 @@ import Constants from '../Constants'
 
 import MailApi from '../services/MailApi'
 
+import '../css/mailPage.scss';
+
 export const ActiveMail = createContext({
     mailId: null,
     setMailId: () => {},
@@ -58,15 +60,19 @@ export class MailPage extends Component {
 
     render() {
         let mailContent = this.getMailContent();
+        let mailSelected = this.state.activeMail && this.state.activeMail.mailId ? 'mail-selected' : '';
+
         return (
         <ActiveMail.Provider value={this.state.activeMail}>
-          <div>
-            <h1>Mail</h1>
-            <div>
-                <MailPreviews></MailPreviews>
+            <div className='mail-page-wrapper'>
+                <div className={'preview-list-wrapper '+ mailSelected}>
+                    <h1>Mail</h1>
+                    <div>
+                        <MailPreviews></MailPreviews>
+                    </div>
+                </div>
+                {mailContent}
             </div>
-            <div> {mailContent} </div>
-          </div>
         </ActiveMail.Provider>
         );
     }

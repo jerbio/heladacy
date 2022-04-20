@@ -53,7 +53,6 @@ export class MailList extends Component {
     }
 
     generateCredential() {
-        debugger
         let credArgs = {
             url: 'https://www.localhostheladackid.com',
             domain: 'localhostheladackid.com'

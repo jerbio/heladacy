@@ -18,13 +18,19 @@ function MailPreview(props) {
 
     const imagePreview = generateUserImage(preview)
     const previewText = generateMailPreviewText(preview)
+    const senderText = preview.senderName || preview.sender;
+    let isSelectedClass = ''
+    if (mailId === preview.id) {
+        isSelectedClass = 'selected'
+    }
 
-    return <div className={'preview-container'}>
+
+    return <div className={isSelectedClass + ' preview-container'}>
             <div onClick={()=> setMailId(preview.id)}>
                 <div className={'preview-top-row'}>
                     <div className={'preview-image'}>{imagePreview}</div>
-                    <div>
-                        <div className={'preview-sender'}>{preview.sender}</div>
+                    <div className={'preview-toprow-text'}>
+                        <div className={'preview-sender'}>{senderText}</div>
                         <div className={'preview-subject'}>{preview.subject}</div>
                     </div>
                 <div className={'preview-time'}>
