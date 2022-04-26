@@ -1,0 +1,22 @@
+.heladac-page-container {
+    display: flex;
+}
+
+.nav-menu-wrapper {
+    width: 70px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 200px;
+    background-color: white;
+    box-shadow: 5px 0px 5px rgb(200 200 200);
+}
+
+#root {
+    background-color: #f5f5fa;
+}
+
+.container {
+    margin-left: 25px;
+    max-width: calc(100% - 50px); /*50px is twice the margin left*/
+
+}

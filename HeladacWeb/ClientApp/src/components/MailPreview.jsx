@@ -16,9 +16,12 @@ function MailPreview(props) {
     const {preview} = props
     const {mailId, setMailId} = useContext(ActiveMail);
 
-    const imagePreview = generateUserImage(preview)
+    let imagePreview = generateUserImage(preview)
     const previewText = generateMailPreviewText(preview)
     const senderText = preview.senderName || preview.sender;
+    if (!imagePreview && senderText) {
+        imagePreview = <div className={'preview-image-text'}>{senderText[0].toUpperCase()}</div>;
+    }
     let isSelectedClass = ''
     if (mailId === preview.id) {
         isSelectedClass = 'selected'
@@ -33,9 +36,8 @@ function MailPreview(props) {
                         <div className={'preview-sender'}>{senderText}</div>
                         <div className={'preview-subject'}>{preview.subject}</div>
                     </div>
-                <div className={'preview-time'}>
-                    <Moment fromNow>{(preview.time)}</Moment></div>
                 </div>
+                <div className={'preview-time'}><Moment fromNow>{(preview.time)}</Moment></div>
                 <div className={'preview-text'}>{previewText}</div>
             </div>
         </div>;

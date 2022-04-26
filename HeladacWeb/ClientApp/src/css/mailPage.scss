@@ -14,7 +14,9 @@
 .mail-content-container {
     padding: 50px;
     background-color: white;
-    box-shadow: -5px 0 5px rgb(200 200 200);
+    box-shadow: -5px 0 5px #c8c8c8;
+    width: calc(100% - 40px);
+    margin-left: 40px;
 }
 
 .mail-sender-receiver-container {
